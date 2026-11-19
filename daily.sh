@@ -23,6 +23,7 @@ if git diff --cached --quiet; then echo "Без изменений"; else
      -m "Claude-Session: https://claude.ai/code/session_01QkzCjE8icoTS7ghpfM8Aoa"
   git -c push.negotiate=true push -q origin HEAD:main
   echo "GitHub обновлён"
+  sleep 20; python3 -I analytics.py upload || true    # Авито забирает файл сразу, а не в начале следующего часа
 fi
 python3 -I rbmw.py status
 # контроль Авито через API: ошибки последней автозагрузки и баланс (нужны ключи AVITO_CLIENT_ID/SECRET)

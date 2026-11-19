@@ -83,6 +83,14 @@ def cmd_check(args):
               open(os.path.join(ROOT, 'out', 'check.json'), 'w'), ensure_ascii=False, indent=1)
 
 
+def cmd_upload(args):
+    # попросить Авито забрать файл по ссылке сразу (после выкладки изменений: цены, продажи, новые позиции)
+    try: req('/autoload/v1/upload', {}, method='POST')
+    except json.JSONDecodeError: pass          # Авито отвечает пустым телом — это успех
+    except Exception as e: print('ВНИМАНИЕ не удалось запустить загрузку Авито сразу:', e); return
+    print('Авито: загрузка файла запущена сразу после выкладки')
+
+
 def stats_v2(u, d1, d2):
     rows, off = [], 0
     while True:
@@ -186,4 +194,4 @@ def write_xlsx(sm, rows):
 
 
 if __name__ == '__main__':
-    {'check': cmd_check, 'report': cmd_report}[sys.argv[1]](sys.argv[2:])
+    {'check': cmd_check, 'report': cmd_report, 'upload': cmd_upload}[sys.argv[1]](sys.argv[2:])
