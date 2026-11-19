@@ -320,6 +320,26 @@ def cmd_pick(args):
     log(st, f'Добавлено в очередь {len(got)} (в пуле осталось {len(pool) - len(got)})')
     save_state(st)
 
+def cmd_topup(args):
+    """Замена позиций, снятых не из-за продажи (ошибка раздела, поколения и т.п.): добавляем столько же новых сразу."""
+    st = load_state()
+    need = [a for a, i in st['items'].items() if i['status'] == 'removed' and not i.get('replaced')]
+    if not need: return
+    cur = load_csv(CSV_NEW); pool = eligible(cur, st); oems = set(); got = []
+    for r in pool:
+        if len(got) >= len(need): break
+        o = norm(oem_list(r)[0]) if oem_list(r) else ''
+        if o and o in oems: continue
+        got.append(r); oems.add(o)
+    for r in got:
+        a = r['Артикул'].strip()
+        st['items'][a] = {'status': 'new', 'added': TODAY, 'price': int(num(r['Цена'])), 'title': make_title(r),
+                          'oem': oem_list(r)[0] if oem_list(r) else '', 'photos': 0, 'replaces': need[len(st['items']) % len(need)] if need else None}
+    for a in need[:len(got)]: st['items'][a]['replaced'] = True
+    log(st, f'Замена снятых позиций: добавлено {len(got)} вместо {", ".join(need[:len(got)])}')
+    save_state(st)
+
+
 def cmd_photos(args):
     st = load_state(); cur = load_csv(CSV_NEW); ok = fail = 0
     for a, it in st['items'].items():
@@ -453,4 +473,4 @@ def cmd_status(args):
 
 if __name__ == '__main__':
     cmd, args = sys.argv[1], sys.argv[2:]
-    {'fetch': cmd_fetch, 'sync': cmd_sync, 'pick': cmd_pick, 'photos': cmd_photos, 'build': cmd_build, 'status': cmd_status, 'cleanup': cmd_cleanup}[cmd](args)
+    {'fetch': cmd_fetch, 'sync': cmd_sync, 'pick': cmd_pick, 'photos': cmd_photos, 'build': cmd_build, 'status': cmd_status, 'cleanup': cmd_cleanup, 'topup': cmd_topup}[cmd](args)

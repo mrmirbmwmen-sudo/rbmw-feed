@@ -6,6 +6,7 @@ export TZ=Europe/Moscow
 python3 -I rbmw.py fetch
 python3 -I rbmw.py sync
 python3 -I rbmw.py pick --daily
+python3 -I rbmw.py topup
 python3 -I rbmw.py photos
 python3 -I rbmw.py build
 python3 -I rbmw.py cleanup
