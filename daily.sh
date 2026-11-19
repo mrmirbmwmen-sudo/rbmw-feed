@@ -9,6 +9,12 @@ python3 -I rbmw.py pick --daily
 python3 -I rbmw.py photos
 python3 -I rbmw.py build
 python3 -I rbmw.py cleanup
+# проверка перед выкладкой: структура как в принятом Авито шаблоне, поля, справочники, цены = Bazon, фото
+if ! python3 -I validate.py out/rbmw.xlsx; then
+  echo "ВНИМАНИЕ проверка файла не пройдена — выкладка остановлена, на Авито остаётся прежний файл"
+  git checkout -q -- state.json 2>/dev/null || true
+  exit 1
+fi
 cp out/rbmw.xlsx rbmw.xlsx
 git add -A
 if git diff --cached --quiet; then echo "Без изменений"; else
