@@ -7,7 +7,7 @@
 Ключи: переменные окружения AVITO_CLIENT_ID / AVITO_CLIENT_SECRET или файл ~/.avito_creds (KEY=VALUE).
 В хранилище ключи не кладём: оно открытое.
 """
-import os, sys, json, datetime, urllib.request, urllib.parse, collections, re
+import os, sys, json, datetime, urllib.request, urllib.parse, urllib.error, collections, re
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 API = 'https://api.avito.ru'
@@ -92,6 +92,9 @@ def cmd_upload(args):
     # попросить Авито забрать файл по ссылке сразу (после выкладки изменений: цены, продажи, новые позиции)
     try: req('/autoload/v1/upload', {}, method='POST')
     except json.JSONDecodeError: pass          # Авито отвечает пустым телом — это успех
+    except urllib.error.HTTPError as e:
+        if e.code == 429: print('Авито: ручной запуск загрузки уже был недавно — файл заберёт по расписанию (в начале часа)'); return
+        print('ВНИМАНИЕ не удалось запустить загрузку Авито сразу:', e); return
     except Exception as e: print('ВНИМАНИЕ не удалось запустить загрузку Авито сразу:', e); return
     print('Авито: загрузка файла запущена сразу после выкладки')
 
