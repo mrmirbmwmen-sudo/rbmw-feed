@@ -51,6 +51,11 @@ def balance(u):
 
 def cmd_check(args):
     u = uid(); out = []
+    # последняя загрузка (в т.ч. неудачная): если Авито не смог обработать файл — это главное
+    last = (req('/autoload/v4/uploads?per_page=1').get('uploads') or [{}])[0]
+    if last.get('status') == 'error':
+        ev = '; '.join(dict.fromkeys(re.sub('<[^>]+>', '', e.get('description', '')).split('.')[0] for e in last.get('events', []) if e.get('type') == 'error'))
+        print(f"ВНИМАНИЕ Авито не обработал файл (загрузка {last.get('started_at')}): {ev}")
     rep = req('/autoload/v4/uploads/last_successful')
     st = rep.get('stats', {}); started = rep.get('started_at', '')
     secs = {s['slug']: s.get('count', 0) for s in st.get('sections', [])}
@@ -59,6 +64,17 @@ def cmd_check(args):
     for it in errs:
         msgs = '; '.join(dict.fromkeys(m.get('title', '') for m in it.get('messages', [])))
         print(f"ВНИМАНИЕ ошибка Авито: №{it.get('ad_id')}: {msgs}")
+    # сверка цен: опубликованная на Авито = цена в файле (по прайсу Bazon)
+    try:
+        st = json.load(open(os.path.join(ROOT, 'state.json'), encoding='utf-8'))['items']
+        act = [x for x in items_all() if x.get('status') == 'active']
+        amap = ad_ids([x['id'] for x in act]); diff = []
+        for x in act:
+            a = amap.get(x['id']); it = st.get(str(a)) if a else None
+            if it and it.get('status') == 'active' and it.get('price') and x.get('price') != it['price']:
+                diff.append(f"№{a} {x.get('title', '')[:40]}: на Авито {x.get('price')} ₽, по базе {it['price']} ₽")
+        if diff: print(f'Цены на Авито ещё не обновились ({len(diff)}): ' + '; '.join(diff))
+    except Exception as e: print('сверка цен не выполнена:', e)
     real, bonus = balance(u)
     print(f'Баланс: {real:.0f} ₽ + бонусы {bonus:.0f}')
     if real + bonus < LOW_BALANCE: print(f'ВНИМАНИЕ мало денег на кошельке Авито: {real + bonus:.0f} ₽ — объявления могут перестать публиковаться')
