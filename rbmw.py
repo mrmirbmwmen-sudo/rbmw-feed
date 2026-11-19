@@ -289,7 +289,7 @@ def eligible(cur, st):
         c5, _, _ = category(r['Наименование'])
         if c5 in (None, 'Аккумуляторы', 'Автомобиль на запчасти'): continue
         # разделы, которых нет в принятом шаблоне Авито (19.11 фаркоп отклонён: нужен «Багажники и фаркопы»)
-        if re.search(r'рейлинг|багажник на крыш', r['Наименование'].lower()): continue
+        if re.search(r'фаркоп|прицепн|рейлинг|багажник на крыш', r['Наименование'].lower()): continue   # нет принятого Авито листа
         if CFG.get('only_bodies') and donor_body(r) not in CFG['only_bodies']: continue
         if c5 not in ('AUDIO', 'FARKOP') and not any(x in COMPAT_OK for x in compat_lines(r)): continue   # без проверенной применяемости Авито не опубликует
         o = oem_list(r)
