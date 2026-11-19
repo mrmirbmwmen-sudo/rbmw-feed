@@ -27,6 +27,6 @@ if git diff --cached --quiet; then echo "Без изменений"; else
 fi
 python3 -I rbmw.py status
 # контроль Авито через API: ошибки последней автозагрузки и баланс (нужны ключи AVITO_CLIENT_ID/SECRET)
-mkdir -p out; python3 -I analytics.py check || echo "API Авито недоступен"
+mkdir -p out; python3 -I analytics.py check || echo "ВНИМАНИЕ проверка через API Авито не выполнилась (ошибка выше)"
 # раз в день (утренний запуск): сверка официальных шаблонов Авито с нашими
 [ "$(date +%H)" = "09" ] && { python3 -I analytics.py specs || echo "сверка шаблонов не выполнена"; }
