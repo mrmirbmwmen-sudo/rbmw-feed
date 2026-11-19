@@ -56,6 +56,10 @@ def s(v): return '' if v is None else str(v).strip()
 
 # ---------------- применяемость ----------------
 COMPAT = json.load(open(P('data', 'compat.json'), encoding='utf-8'))
+# Только значения «Поколения», которые Авито точно принимает (у коллеги опубликовано по ним 20+ объявлений).
+# 19.11: «4 серия Gran Coupe|G26» и подобные редкие строки дали ошибку «Поколение: значение не найдено».
+COMPAT_OK = set(json.load(open(P('data', 'compat_ok.json'), encoding='utf-8')))
+MAX_COMPAT = 10
 LCI_YEAR = {'G05': 2023, 'G06': 2023, 'G07': 2022, 'F95': 2023, 'F96': 2023, 'F97': 2021, 'F98': 2021,
             'G01': 2021, 'G02': 2021, 'G87': 2024, 'G80': 2024, 'G81': 2024, 'G82': 2024, 'G83': 2024,
             'G30': 2020, 'G31': 2020, 'G11': 2019, 'G12': 2019}
@@ -81,16 +85,18 @@ def fit_bodies(r):
                 if c not in out: out.append(c)
     return out
 
-def compat_lines(r):
+def compat_lines(r, verified=True):
     b = donor_body(r); L = []
     def add(x):
-        if x and x not in L: L.append(x)
+        if x and (x in COMPAT_OK or not verified) and x not in L and len(L) < MAX_COMPAT: L.append(x)
     if b in COMPAT:
         d = COMPAT[b]; add(d.get('lci') if is_lci(r) and d.get('lci') else d.get('pre') or d.get('lci'))
     for c in fit_bodies(r):
         if c in COMPAT and c != b:
             add(COMPAT[c].get('pre')); add(COMPAT[c].get('lci'))
-    return L[:20]
+    if not L and verified:          # поле обязательное: если проверенных нет, берём как есть (не больше 3)
+        L = compat_lines(r, verified=False)[:3]
+    return L
 
 # ---------------- заголовок и описание ----------------
 def side(r):
@@ -250,6 +256,7 @@ def eligible(cur, st):
         c5, _, _ = category(r['Наименование'])
         if c5 in (None, 'Аккумуляторы', 'Автомобиль на запчасти'): continue
         if CFG.get('only_bodies') and donor_body(r) not in CFG['only_bodies']: continue
+        if c5 != 'AUDIO' and not any(x in COMPAT_OK for x in compat_lines(r)): continue   # без проверенной применяемости Авито не опубликует
         o = oem_list(r)
         if o and norm(o[0]) in used_oem: continue
         out.append(r)
