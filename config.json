@@ -7,7 +7,7 @@
  "min_price": 15000,
  "start_batch": 30,
  "per_day": 10,
- "only_used": true,
+ "only_used": false,
  "only_bodies": [],
  "exclude_articles": [
   "6662",
