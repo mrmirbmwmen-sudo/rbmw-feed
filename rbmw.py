@@ -377,8 +377,9 @@ def cmd_build(args):
         bad = [f'{k}={vv}' for k, vv in v.items() if vv is not None and k in lists and str(vv) not in lists[k] and k not in ('Способ доставки',)]
         if bad: problems.append(f'№{a}: значение не из справочника Авито: {bad}')
         if c5 != 'AUDIO' and not v.get('Авто для которых подходит запчасть'): stat['без применяемости'] += 1
+        idc = h.index('Уникальный идентификатор объявления') + 1   # в новых шаблонах первой идёт колонка «Ошибка»
         row = 5
-        while ws.cell(row, 1).value not in (None, ''): row += 1
+        while ws.cell(row, idc).value not in (None, ''): row += 1
         for j, name in enumerate(h, start=1):
             if name in v and v[name] is not None: ws.cell(row, j).value = v[name]
         if it['status'] == 'new': it['status'] = 'active'; it['first_feed'] = TODAY
