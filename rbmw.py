@@ -115,29 +115,61 @@ def make_title(r):
 def esc(t): return html.escape(t, quote=False)
 
 POLICY_HTML = text.POLICY
+ENGINE_C5 = ('Двигатель', 'Топливная и выхлопная системы')
+
+def engine_code(r):
+    e = r['Двигатель'].strip().split()
+    return e[0].upper() if e else ''
+
+def clean(s):
+    """Без скобок, лишних запятых и «крючков»: так Авито лучше собирает поисковые фразы (правила руководства 19.11)."""
+    s = text.unent(s)
+    s = re.sub(r'\s+,', ',', s); s = re.sub(r'[()\[\]{}«»"]', ' ', s)
+    return re.sub(r'\s+', ' ', s).strip()
+
+def synonyms(r, title, bb):
+    """3-4 строки синонимов без знаков: словарь руководства + код двигателя для моторных деталей + общие формы."""
+    out = text.syn_lines(title, bb)
+    name = re.split(r'(?i)\bBMW\b', title, maxsplit=1)[0].strip()
+    tail = ' '.join(bb)
+    c5 = category(r['Наименование'])[0]
+    ec = engine_code(r)
+    extra = []
+    if ec and c5 in ENGINE_C5: extra.append(f'{name} BMW {ec} {tail}')
+    extra += [f'{name} оригинал BMW {tail}', f'{name} BMW {tail} {"новая" if r["Новый/БУ"] == "Новый" else "б/у"}']
+    for x in extra:
+        x = re.sub(r'\s+', ' ', x).strip()
+        if len(out) >= 4: break
+        if x.lower() != title.lower() and x not in out: out.append(x)
+    return out[:4]
+
 def make_desc(r, art, title):
     comp = '\n'.join(compat_lines(r))
-    bb = text.bodies(comp, title); syn = text.syn_lines(title, bb)
+    bb = text.bodies(comp, title); syn = synonyms(r, title, bb)
     L = ['<p><strong>' + esc(title) + '</strong>' + ''.join('<br>' + esc(x) for x in syn) + '</p>']
     if text.is_door(title): L.append(text.DOORNOTE)
+    cond = 'Новая оригинальная запчасть BMW' if r['Новый/БУ'] == 'Новый' else 'Оригинальная запчасть BMW б/у'
+    sell = [cond + ' в наличии в Москве']
+    if delivery(title): sell.append('Отправка по России через Авито Доставку')
+    L.append('<p>' + '<br>'.join(sell) + '</p>')
     L.append(text.KOMPL)
     nums = oem_list(r)
     info = []
-    if nums: info.append('Номер детали BMW: ' + esc(nums[0]))
+    if nums: info.append('Номер детали BMW ' + esc(nums[0]))
     cross = [x for x in nums[1:] if len(x) >= 7 and x != nums[0]][:5]
-    if cross: info.append('Кросс-номера: ' + esc(', '.join(dict.fromkeys(cross))))
+    if cross: info.append('Кросс-номера ' + esc(' '.join(dict.fromkeys(cross))))
     if info: L.append('<p>' + '<br>'.join(info) + '</p>')
     com = r['Комментарий'].replace('\\n', '\n')
     com = com.split('\n\n' + r['Наименование'] + ' подходит')[0]   # блок применяемости Bazon выводим отдельно
-    lines = [esc(text.unent(x.strip())) for x in com.split('\n') if x.strip()]
-    lines = [re.sub(r'(?i)\s*\bв\s+сборе\b', '', x) for x in lines]
-    donor = 'Снято с BMW ' + esc(' '.join(x for x in [r['Модель'].replace("'", ''), r['Кузов'], r['Двигатель']] if x))
-    if r['Год']: donor += f', {esc(r["Год"])} г.в.'
+    lines = [esc(clean(x)) for x in com.split('\n') if x.strip()]
+    lines = [re.sub(r'(?i)\s*\bв\s+сборе\b', '', x) for x in lines if x]
+    donor = 'Снято с BMW ' + esc(clean(' '.join(x for x in [r['Модель'].replace("'", ''), r['Кузов'], r['Двигатель']] if x)))
+    if r['Год']: donor += f' {esc(r["Год"])} года выпуска'
     L.append('<p><strong>Состояние и комплектность</strong><br>' + '<br>'.join(lines + [donor]) + '</p>')
     if comp:
         fl = []
         for x in comp.split('\n'):
-            p = x.split('|'); fl.append(f'BMW {p[1]} {p[2]}')
+            p = x.split('|'); fl.append(clean(f'BMW {p[1]} {p[2]}'))
         L.append('<p><strong>Подходит для</strong><br>' + '<br>'.join(esc(x) for x in fl) + '</p>')
     L.append(f'<p>Артикул товара №{art}</p>')
     L.append('<p>' + text.VINP + '</p>')

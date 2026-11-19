@@ -80,6 +80,18 @@ def cmd_check(args):
                 diff.append(f"№{a} {x.get('title', '')[:40]}: на Авито {x.get('price')} ₽, по базе {it['price']} ₽")
         if diff: print(f'Цены на Авито ещё не обновились ({len(diff)}): ' + '; '.join(diff))
     except Exception as e: print('сверка цен не выполнена:', e)
+    # чаты: покупатель написал и ждёт ответа дольше 30 минут (скорость ответа влияет на показы)
+    try:
+        now = datetime.datetime.now(datetime.timezone.utc).timestamp(); wait = []
+        for c in req(f'/messenger/v2/accounts/{u}/chats?limit=50').get('chats', []):
+            lm = c.get('last_message') or {}
+            if not lm or lm.get('author_id') in (u, 0) or lm.get('direction') == 'out': continue
+            age = (now - lm.get('created', now)) / 60
+            if 30 <= age <= 24 * 60:
+                it = ((c.get('context') or {}).get('value') or {}).get('title', '')
+                wait.append(f"{it[:45]} — ждёт {int(age // 60)} ч {int(age % 60)} мин")
+        if wait: print(f'ВНИМАНИЕ неотвеченные чаты ({len(wait)}): ' + '; '.join(wait[:10]))
+    except Exception as e: print('чаты не проверены:', e)
     real, bonus = balance(u)
     print(f'Баланс: {real:.0f} ₽ + бонусы {bonus:.0f}')
     if real + bonus < LOW_BALANCE: print(f'ВНИМАНИЕ мало денег на кошельке Авито: {real + bonus:.0f} ₽ — объявления могут перестать публиковаться')
