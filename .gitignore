@@ -1,0 +1,4 @@
+data/bazon*.csv
+data/*.tmp
+out/
+__pycache__/

@@ -1,0 +1,20 @@
+{
+ "account": "RBMW",
+ "csv_url": "https://baz-on.ru/export/c3264/5d8da/yandex-mirbmw-parts-csv.csv",
+ "address": "Москва, Дмитровское шоссе, 163с5",
+ "phone": "",
+ "contact": "По телефону и в сообщениях",
+ "min_price": 15000,
+ "start_batch": 30,
+ "per_day": 10,
+ "only_used": true,
+ "only_bodies": [],
+ "exclude_articles": [
+  "6662",
+  "6664"
+ ],
+ "bazon_hidden_below": 6400,
+ "delivery": true,
+ "feed_file": "rbmw.xlsx",
+ "photo_base": "https://raw.githubusercontent.com/mrmirbmwmen-sudo/rbmw-feed/main/photos/"
+}
