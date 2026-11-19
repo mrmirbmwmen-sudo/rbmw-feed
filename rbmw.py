@@ -185,6 +185,7 @@ def category(name):
     n = name.lower()
     if re.search(AUDIO, n) and not re.search(r'сетк|проводк|жгут', n): return 'AUDIO', None, None
     if re.search(r'фаркоп|прицепное устройство|тягово-сцепн', n) and not re.search(r'блок|проводк|жгут|кнопк', n): return 'FARKOP', None, None
+    if re.match(r'руль\b|рулевое колесо', n): return 'Рулевое управление', None, None   # 19.11: Авито сам перенёс руль из «Салона»
     c5, tag, val = cls.classify(name)
     if c5 not in ('Трансмиссия и привод',) and not re.search(r'кронштейн|опора|подушк|пыльник', n):
         for rx, tv in TRANS:
