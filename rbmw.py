@@ -255,6 +255,8 @@ def eligible(cur, st):
         if CFG.get('only_used', True) and r['Новый/БУ'] not in ('БУ', 'Контракт'): continue
         c5, _, _ = category(r['Наименование'])
         if c5 in (None, 'Аккумуляторы', 'Автомобиль на запчасти'): continue
+        # разделы, которых нет в принятом шаблоне Авито (19.11 фаркоп отклонён: нужен «Багажники и фаркопы»)
+        if re.search(r'фаркоп|прицепн|рейлинг|багажник на крыш', r['Наименование'].lower()): continue
         if CFG.get('only_bodies') and donor_body(r) not in CFG['only_bodies']: continue
         if c5 != 'AUDIO' and not any(x in COMPAT_OK for x in compat_lines(r)): continue   # без проверенной применяемости Авито не опубликует
         o = oem_list(r)

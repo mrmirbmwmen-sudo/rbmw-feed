@@ -59,10 +59,15 @@ def cmd_check(args):
     rep = req('/autoload/v4/uploads/last_successful')
     st = rep.get('stats', {}); started = rep.get('started_at', '')
     secs = {s['slug']: s.get('count', 0) for s in st.get('sections', [])}
-    errs = req('/autoload/v4/uploads/last_successful/items?per_page=100&sections=error').get('items', []) if secs.get('error') else []
+    # ошибки и отклонения — по последнему ЗАВЕРШЁННОМУ отчёту (last_successful бывает устаревшим)
+    try:
+        rid = req('/autoload/v2/reports/last_completed_report').get('report_id')
+        errs = req(f'/autoload/v2/reports/{rid}/items?per_page=100&sections=error').get('items', [])
+    except Exception:
+        errs = req('/autoload/v4/uploads/last_successful/items?per_page=100&sections=error').get('items', []) if secs.get('error') else []
     print(f"Автозагрузка {started}: обработано {st.get('count', 0)}, ошибок {secs.get('error', 0)}, статус {rep.get('status')}")
     for it in errs:
-        msgs = '; '.join(dict.fromkeys(m.get('title', '') for m in it.get('messages', [])))
+        msgs = '; '.join(dict.fromkeys((m.get('title', '') + ' ' + re.sub('<[^>]+>', ' ', m.get('description', ''))[:160]).strip() for m in it.get('messages', [])))
         print(f"ВНИМАНИЕ ошибка Авито: №{it.get('ad_id')}: {msgs}")
     # сверка цен: опубликованная на Авито = цена в файле (по прайсу Bazon)
     try:
