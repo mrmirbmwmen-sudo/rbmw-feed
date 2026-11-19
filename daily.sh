@@ -19,3 +19,5 @@ if git diff --cached --quiet; then echo "Без изменений"; else
   echo "GitHub обновлён"
 fi
 python3 -I rbmw.py status
+# контроль Авито через API: ошибки последней автозагрузки и баланс (нужны ключи AVITO_CLIENT_ID/SECRET)
+mkdir -p out; python3 -I analytics.py check || echo "API Авито недоступен"
