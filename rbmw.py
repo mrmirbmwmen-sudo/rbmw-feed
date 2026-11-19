@@ -152,6 +152,7 @@ TRANS = [(r'селектор|кулис|переключ', 'Переключен
 def category(name):
     n = name.lower()
     if re.search(AUDIO, n) and not re.search(r'сетк|проводк|жгут', n): return 'AUDIO', None, None
+    if re.search(r'фаркоп|прицепное устройство|тягово-сцепн', n) and not re.search(r'блок|проводк|жгут|кнопк', n): return 'FARKOP', None, None
     c5, tag, val = cls.classify(name)
     if c5 not in ('Трансмиссия и привод',) and not re.search(r'кронштейн|опора|подушк|пыльник', n):
         for rx, tv in TRANS:
@@ -256,9 +257,9 @@ def eligible(cur, st):
         c5, _, _ = category(r['Наименование'])
         if c5 in (None, 'Аккумуляторы', 'Автомобиль на запчасти'): continue
         # разделы, которых нет в принятом шаблоне Авито (19.11 фаркоп отклонён: нужен «Багажники и фаркопы»)
-        if re.search(r'фаркоп|прицепн|рейлинг|багажник на крыш', r['Наименование'].lower()): continue
+        if re.search(r'рейлинг|багажник на крыш', r['Наименование'].lower()): continue
         if CFG.get('only_bodies') and donor_body(r) not in CFG['only_bodies']: continue
-        if c5 != 'AUDIO' and not any(x in COMPAT_OK for x in compat_lines(r)): continue   # без проверенной применяемости Авито не опубликует
+        if c5 not in ('AUDIO', 'FARKOP') and not any(x in COMPAT_OK for x in compat_lines(r)): continue   # без проверенной применяемости Авито не опубликует
         o = oem_list(r)
         if o and norm(o[0]) in used_oem: continue
         out.append(r)
@@ -305,6 +306,7 @@ def sheet_for(wb, c5):
     for ws in wb.worksheets:
         a1 = str(ws['A1'].value or '')
         if c5 == 'AUDIO' and a1.endswith('Аудио- и видеотехника - Другое'): return ws
+        if c5 == 'FARKOP' and a1.endswith('Багажники и фаркопы - Фаркопы и комплектующие'): return ws
         if a1.startswith('Транспорт - Запчасти и аксессуары - Запчасти - Для автомобилей') and a1.endswith(' - ' + str(c5)): return ws
     return None
 
@@ -362,6 +364,9 @@ def cmd_build(args):
              'Номер детали OEM': re.sub(r'[^0-9A-Za-z-]', '', it['oem'].translate(TRL))}
         if c5 == 'AUDIO':
             v.update({'Вид товара': 'Аудио- и видеотехника', 'Тип техники': 'Другое'})
+        elif c5 == 'FARKOP':     # раздел по спецификации API Авито (farkopy_i_komplektuyushie), 19.11
+            v.update({'Вид товара': 'Багажники и фаркопы', 'Тип товара': 'Фаркопы и комплектующие',
+                      'Авто для которых подходит запчасть': '\n'.join(compat_lines(r)) or None})
         else:
             v.update({'Вид товара': 'Запчасти', 'Тип товара': 'Для автомобилей', 'Вид запчасти': c5,
                       'Авто для которых подходит запчасть': '\n'.join(compat_lines(r)) or None})
@@ -378,7 +383,7 @@ def cmd_build(args):
         lists = lists_of(wb, ws, h)
         bad = [f'{k}={vv}' for k, vv in v.items() if vv is not None and k in lists and str(vv) not in lists[k] and k not in ('Способ доставки',)]
         if bad: problems.append(f'№{a}: значение не из справочника Авито: {bad}')
-        if c5 != 'AUDIO' and not v.get('Авто для которых подходит запчасть'): stat['без применяемости'] += 1
+        if c5 not in ('AUDIO', 'FARKOP') and not v.get('Авто для которых подходит запчасть'): stat['без применяемости'] += 1
         idc = h.index('Уникальный идентификатор объявления') + 1   # в новых шаблонах первой идёт колонка «Ошибка»
         row = 5
         while ws.cell(row, idc).value not in (None, ''): row += 1

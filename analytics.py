@@ -99,6 +99,55 @@ def cmd_upload(args):
     print('Авито: загрузка файла запущена сразу после выкладки')
 
 
+SPEC_SLUGS = {'Для автомобилей - Автосвет': 'avtosvet', 'Для автомобилей - Двигатель': 'dvigatel', 'Для автомобилей - Кузов': 'kuzov',
+    'Для автомобилей - Подвеска': 'podveska', 'Для автомобилей - Рулевое управление': 'rulevoe_upravlenie', 'Для автомобилей - Салон': 'salon',
+    'Для автомобилей - Стёкла': 'stekla', 'Для автомобилей - Топливная и выхлопная системы': 'toplivnaia_i_vyxlopnaia_sistemy',
+    'Для автомобилей - Тормозная система': 'tormoznaia_sistema_5539', 'Для автомобилей - Трансмиссия и привод': 'transmissiia_i_privod',
+    'Для автомобилей - Электрооборудование': 'elektrooborudovanie', 'Для автомобилей - Система охлаждения': 'sistema_oxlazdeniia',
+    'Аудио- и видеотехника - Другое': 'audio__i_videotehnika_drugoe', 'Багажники и фаркопы - Фаркопы и комплектующие': 'farkopy_i_komplektuyushie'}
+
+
+def spec_snapshot():
+    snap = {}
+    for name, slug in SPEC_SLUGS.items():
+        F = req(f'/autoload/v1/user-docs/node/{slug}/fields')['fields']; d = {}
+        for f in F:
+            c = (f.get('content') or [{}])[0]
+            vals = sorted(str(v.get('value') if isinstance(v, dict) else v) for v in (c.get('values') or []))
+            d[f['label']] = {'req': bool(c.get('required')), 'dep': bool(c.get('required_by_dependency')), 'values': vals}
+        snap[name] = d
+    return snap
+
+
+def cmd_specs(args):
+    """Сверка официальных шаблонов Авито (API) с сохранённым снимком и с нашим шаблоном."""
+    import openpyxl
+    path = os.path.join(ROOT, 'data', 'avito_spec.json')
+    snap = spec_snapshot()
+    if '--baseline' in args or not os.path.exists(path):
+        json.dump(snap, open(path, 'w'), ensure_ascii=False, indent=0); print('снимок шаблонов Авито сохранён'); return
+    old = json.load(open(path, encoding='utf-8')); msgs = []
+    wb = openpyxl.load_workbook(os.path.join(ROOT, 'data', 'template.xlsx'), read_only=True)
+    heads = {}
+    for ws in wb.worksheets:
+        rows = ws.iter_rows(min_row=1, max_row=2, values_only=True); a1 = next(rows, [None])[0]; h = next(rows, ())
+        if a1: heads[str(a1)] = set(x for x in h if x)
+    for name, d in snap.items():
+        o = old.get(name, {}); h = next((v for k, v in heads.items() if k.endswith(name)), set())
+        for lab, f in d.items():
+            if f['req'] and lab not in h: msgs.append(f'«{name}»: обязательное поле «{lab}» отсутствует в нашем шаблоне')
+            if lab not in o: msgs.append(f'«{name}»: Авито добавил поле «{lab}»' + (' (ОБЯЗАТЕЛЬНОЕ)' if f['req'] else ''))
+            elif f['req'] and not o[lab]['req']: msgs.append(f'«{name}»: поле «{lab}» стало обязательным')
+            elif o[lab]['values'] and f['values'] != o[lab]['values']:
+                gone = sorted(set(o[lab]['values']) - set(f['values']))
+                if gone: msgs.append(f'«{name}»: в поле «{lab}» Авито убрал значения {gone[:5]}')
+        for lab in o:
+            if lab not in d: msgs.append(f'«{name}»: Авито убрал поле «{lab}»')
+    if msgs:
+        print('ВНИМАНИЕ изменились шаблоны Авито:'); [print(' -', m) for m in msgs[:30]]
+    else: print('Шаблоны Авито без изменений')
+
+
 def stats_v2(u, d1, d2):
     rows, off = [], 0
     while True:
@@ -202,4 +251,4 @@ def write_xlsx(sm, rows):
 
 
 if __name__ == '__main__':
-    {'check': cmd_check, 'report': cmd_report, 'upload': cmd_upload}[sys.argv[1]](sys.argv[2:])
+    {'check': cmd_check, 'report': cmd_report, 'upload': cmd_upload, 'specs': cmd_specs}[sys.argv[1]](sys.argv[2:])
