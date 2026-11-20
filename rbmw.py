@@ -402,6 +402,7 @@ def cmd_build(args):
     rows = []
     for a, it in sorted(st['items'].items(), key=lambda x: (x[1]['added'], x[0])):
         if it['status'] not in ('new', 'active') or a not in cur: continue
+        if it.get('feed'): continue          # позиции отдельных файлов (extra_feed.py)
         r = cur[a]
         if it.get('photos'): urls = [base + f'{a}_{k}.jpg' for k in range(it['photos'])]
         elif allow_raw: urls = photos_of(r)[:10]

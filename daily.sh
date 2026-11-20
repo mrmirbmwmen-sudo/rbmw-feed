@@ -17,6 +17,8 @@ if ! python3 -I validate.py out/rbmw.xlsx; then
   exit 1
 fi
 cp out/rbmw.xlsx rbmw.xlsx
+# отдельный файл для разделов в новом формате Авито (фаркопы)
+if python3 -I extra_feed.py; then cp out/rbmw_farkop.xlsx rbmw_farkop.xlsx; else echo "ВНИМАНИЕ доп. файл (фаркопы) не прошёл проверку — не обновлён"; fi
 git add -A
 if git diff --cached --quiet; then echo "Без изменений"; else
   git -c user.name="Claude" -c user.email="noreply@anthropic.com" commit -qm "RBMW: $(date '+%d.%m %H:%M')" \

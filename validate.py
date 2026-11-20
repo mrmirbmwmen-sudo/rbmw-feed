@@ -76,7 +76,7 @@ def main():
                 f = os.path.join(ROOT, 'photos', u.rsplit('/', 1)[-1])
                 if '/photos/' in u and not os.path.exists(f): err.append(f'№{a}: нет файла фото {u.rsplit("/", 1)[-1]}'); break
     if len(ids) != len(set(ids)): err.append('повторяющиеся ID объявлений')
-    active = {a for a, it in state.items() if it['status'] in ('active', 'new') and it.get('photos') and a in bazon}
+    active = {a for a, it in state.items() if it['status'] in ('active', 'new') and it.get('photos') and a in bazon and not it.get('feed')}
     if set(ids) != active:
         lost, extra = active - set(ids), set(ids) - active
         if lost: err.append(f'в файле нет активных позиций: {sorted(lost)[:10]}')
