@@ -363,14 +363,15 @@
    "replaced": true
   },
   "3349": {
-   "status": "active",
+   "status": "removed",
    "added": "2026-11-19",
    "price": 116880,
    "title": "Фаркоп BMW G20 G21 G22 G23",
    "oem": "51129880869",
    "photos": 10,
    "first_feed": "2026-11-19",
-   "replaced": true
+   "replaced": true,
+   "reason": "20.11: лист из официального шаблона внутри нашей книги Авито тоже читает как 4 строки без ID; нужен отдельный файл"
   },
   "7555": {
    "status": "active",
