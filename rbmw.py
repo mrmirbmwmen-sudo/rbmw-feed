@@ -268,7 +268,17 @@ def cmd_sync(args):
         if it['status'] != 'active': continue
         if a in cur:
             p = int(num(cur[a]['Цена']))
-            if p and p != it['price']: price.append(f"№{a} {it['title']}: {it['price']} → {p}"); it['price'] = p
+            if p and p != it['price']:
+                note = ''
+                if p < it['price'] * 0.5:
+                    # резкое снижение: массовая переоценка (у тех же номеров/наименований в базе та же цена) или одиночная — возможна ошибка
+                    o = norm(oem_list(cur[a])[0]) if oem_list(cur[a]) else ''
+                    same = [k for k, x in cur.items() if k != a and ((o and oem_list(x) and norm(oem_list(x)[0]) == o) or
+                            (x['Наименование'] == cur[a]['Наименование'] and x['Кузов'] == cur[a]['Кузов']))]
+                    eq = sum(1 for k in same if int(num(cur[k]['Цена'])) == p)
+                    note = (f' [снижение {round(100 - 100 * p / it["price"])}%: массовая переоценка в базе — так же стоят ещё {eq} шт.]' if eq
+                            else f' [ВНИМАНИЕ снижение {round(100 - 100 * p / it["price"])}%: одиночное, похожих по такой цене в базе нет — проверьте Bazon]')
+                price.append(f"№{a} {it['title']}: {it['price']} → {p}{note}"); it['price'] = p
             continue
         # нет в прайсе: продано, если было в прошлом прайсе или дороже порога выгрузки (дешёвые Bazon иногда не выгружает)
         if a in prev or it['price'] > CFG.get('bazon_hidden_below', 6400):
