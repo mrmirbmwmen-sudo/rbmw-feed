@@ -1,7 +1,7 @@
 {
  "last_good": {
-  "report": 637968796,
-  "at": "2026-11-20T19:13+03:00",
+  "report": 637974334,
+  "at": "2026-11-20T20:09+03:00",
   "md5": {
    "data/template.xlsx": "782113475cf743b72833aa2bf2cdb0a5",
    "data/accepted_layout.json": "11c7905bba3196cb8cbc765020c596e8"
@@ -10,6 +10,7 @@
  "errors": {},
  "missing": {},
  "reports_seen": [
-  637968796
+  637968796,
+  637974334
  ]
 }
