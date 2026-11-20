@@ -6,6 +6,8 @@ export TZ=Europe/Moscow
 python3 -I rbmw.py fetch
 python3 -I rbmw.py sync
 python3 -I rbmw.py pick --daily
+# самопроверка и самовосстановление по последнему отчёту Авито (автооткат шаблона, снятие объявлений с повторной ошибкой)
+python3 -I guard.py || echo "ВНИМАНИЕ самопроверка guard.py не выполнилась (ошибка выше)"
 python3 -I rbmw.py topup
 python3 -I rbmw.py photos
 python3 -I rbmw.py build
