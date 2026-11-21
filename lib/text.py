@@ -40,6 +40,8 @@ def clean_title(t):
     t=re.sub(r'\s+',' ',unent(t)).strip(); g=gender(t.split()[0]) if t else 'm'
     for pat,k in ABR:
         t=re.sub(r'(?i)\b'+pat+r'(?=\s|$)',lambda m:END[g][k],t)
+    t=re.sub(r'(?i)(\d)\s*-\s*series',r'\1 серия',t)   # 21.11: «7-series» → «7 серия»
+    t=re.sub(r'(?<=\w)-(?=\w)',' ',t)                 # 21.11: без дефисов в заголовке («M-style» → «M style»)
     t=re.sub(r'№\s*\d+','',t)
     t=re.sub(r'(?<=\w)/(?=\w)',' ',t)
     t=re.sub(r"[,()\[\]/;:!«»\"№'’]+",' ',t)

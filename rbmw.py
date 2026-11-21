@@ -102,10 +102,18 @@ def compat_lines(r, verified=True):
 def side(r):
     return ' '.join(x for x in [r['Перед/Зад'], r['Лев/Прав']] if x).lower()
 
+def norm_model(m):
+    """Модель из Bazon в том виде, как ищут люди: «7 - series», «5-series(M)» → «7 серия» (21.11)."""
+    m = re.sub(r'(?i)(\d)\s*-\s*series', r'\1 серия', str(m or '').replace("'", ' '))
+    m = re.sub(r'\(M\)', '', m)
+    return re.sub(r'\s+', ' ', m).strip()
+
 def make_title(r):
     b = donor_body(r)
-    mdl = r['Модель'].replace("BMW", '').replace("'", ' ').split()
-    mdl = next((w for w in mdl if w.upper() not in ('LCI',) and not re.fullmatch(r'\d', w)), '')
+    ms = norm_model(r['Модель'].split(',')[0].replace('BMW', ''))
+    ser = re.match(r'\d серия\b', ms)
+    mdl = ms.split()
+    mdl = ser.group(0) if ser else next((w for w in mdl if w.upper() not in ('LCI',) and not re.fullmatch(r'\d', w)), '')
     if mdl.upper() == b: mdl = ''
     w = [r['Наименование'], side(r), 'BMW', mdl, b, 'LCI' if is_lci(r) and b in LCI_YEAR else '', r['Год'][-4:]]
     t = text.clean_title(' '.join(x for x in w if x))
@@ -124,7 +132,10 @@ def engine_code(r):
 def clean(s):
     """Без скобок, лишних запятых и «крючков»: так Авито лучше собирает поисковые фразы (правила руководства 19.11)."""
     s = text.unent(s)
-    s = re.sub(r'\s+,', ',', s); s = re.sub(r'[()\[\]{}«»"]', ' ', s)
+    s = re.sub(r'(?i)(\d)\s*-\s*series', r'\1 серия', s)          # «7 - series» → «7 серия»
+    s = re.sub(r'[()\[\]{}«»"]', ' ', s)
+    s = re.sub(r'\s+([,.;:!?])', r'\1', s)                          # без пробела перед знаком (после снятия скобок)
+    s = re.sub(r'([,;:])(?=[^\s\d])', r'\1 ', s)                     # и с пробелом после
     return re.sub(r'\s+', ' ', s).strip()
 
 def synonyms(r, title, bb):
@@ -142,6 +153,13 @@ def synonyms(r, title, bb):
         if len(out) >= 4: break
         if x.lower() != title.lower() and x not in out: out.append(x)
     return out[:4]
+
+def soft_caps(x):
+    """21.11: «С ДЕФЕКТАМИ! НА ЗАПЧАСТИ!» → «С дефектами! На запчасти!» (латиница и коды не трогаются)."""
+    KEEP = ('АКПП', 'МКПП', 'КПП', 'ДВС', 'ЭБУ', 'ГУ', 'ОГ', 'ПТФ', 'РФ', 'ТО', 'ГБЦ', 'ЕГР', 'ЭУР', 'ГУР')
+    if len(re.findall(r'\b[А-ЯЁ]{3,}\b', x)) < 2: return x       # только строки, набранные капсом
+    x = re.sub(r'\b[А-ЯЁ]{2,}\b', lambda m: m.group(0) if m.group(0) in KEEP else m.group(0).lower(), x)
+    return re.sub(r'(^|[.!?]\s+)([а-яё])', lambda m: m.group(1) + m.group(2).upper(), x)
 
 def make_desc(r, art, title):
     comp = '\n'.join(compat_lines(r))
@@ -163,8 +181,13 @@ def make_desc(r, art, title):
     com = r['Комментарий'].replace('\\n', '\n')
     com = com.split('\n\n' + r['Наименование'] + ' подходит')[0]   # блок применяемости Bazon выводим отдельно
     lines = [esc(clean(x)) for x in com.split('\n') if x.strip()]
-    lines = [re.sub(r'(?i)\s*\bв\s+сборе\b', '', x) for x in lines if x]
-    donor = 'Снято с BMW ' + esc(clean(' '.join(x for x in [r['Модель'].replace("'", ''), r['Кузов'], r['Двигатель']] if x)))
+    lines = [soft_caps(re.sub(r'(?i)\s*\bв\s+сборе\b', '', x)) for x in lines if x]
+    # 21.11: «Снято с BMW X5 xDrive50e G05 LCI B58B30S» — LCI после кузова, без повтора кода мотора из модели
+    eng = r['Двигатель'].strip()
+    mw = [w for w in norm_model(r['Модель']).split() if w.upper() != 'LCI']
+    if eng: mw = [w for w in mw if not re.fullmatch(r'(?i)[BNS]\d\d[A-Z]?', w)]
+    lci = ' LCI' if ('LCI' in r['Модель'].upper() or is_lci(r)) and r['Кузов'] and 'LCI' not in r['Кузов'].upper() else ''
+    donor = 'Снято с BMW ' + esc(clean(' '.join(x for x in [' '.join(mw), (r['Кузов'] + lci).strip(), eng] if x)))
     if r['Год']: donor += f' {esc(r["Год"])} года выпуска'
     L.append('<p><strong>Состояние и комплектность</strong><br>' + '<br>'.join(lines + [donor]) + '</p>')
     if comp:
