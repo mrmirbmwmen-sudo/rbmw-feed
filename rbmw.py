@@ -162,6 +162,7 @@ def soft_caps(x):
     return re.sub(r'(^|[.!?]\s+)([а-яё])', lambda m: m.group(1) + m.group(2).upper(), x)
 
 def make_desc(r, art, title):
+    if CFG.get('desc_v2'): return make_desc_v2(r, art, title)
     comp = '\n'.join(compat_lines(r))
     bb = text.bodies(comp, title); syn = synonyms(r, title, bb)
     # первая строка = заголовок дословно (правило руководства); 21.11: артикул жирным сразу под ним
@@ -198,6 +199,78 @@ def make_desc(r, art, title):
         L.append('<p><strong>Подходит для</strong><br>' + '<br>'.join(esc(x) for x in fl) + '</p>')
     L.append('<p>' + text.VINP + '</p>')
     L.append(POLICY_HTML)
+    return ' '.join(L)
+
+
+# ---------------- описание v2 (21.11): синонимы живыми предложениями, «Почему у нас», «Как купить» ----------------
+HOOK = r'без пробега|тестов\w* (авто|а/м|машин)|состояни\w* нов|как нов|идеальн\w* состояни|отличн\w* состояни'
+AGREE = {'m': ('оригинальный', 'нужен'), 'f': ('оригинальная', 'нужна'), 'n': ('оригинальное', 'нужно'), 'p': ('оригинальные', 'нужны')}
+POLICY_V2 = ('<p><strong>Проверка и возврат</strong><br>'
+             'Вернуть деталь можно в течение 14 дней после получения, если она в том виде, в каком мы её отправили. '
+             'Если деталь не соответствует описанию или фото, вернём деньги полностью.<br>'
+             'Не принимаем обратно детали со следами установки, вскрытия или повреждениями после продажи, '
+             'а также электронные блоки после программирования или кодирования.<br>'
+             'Расходы на установку и расходные материалы не возмещаются.</p>')
+
+def _lc(x):
+    w = x.split(' ', 1)
+    return (w[0] if re.match(r'^[А-ЯЁA-Z]{2,}', w[0]) else w[0][:1].lower() + w[0][1:]) + (' ' + w[1] if len(w) > 1 else '')
+
+def intro_v2(r, title, syn, bb):
+    """Живой абзац вместо 4 строк синонимов: те же ключевые слова, без столбика ключей (21.11)."""
+    phr = []
+    head = re.split(r'(?i)\s+BMW\b', title, 1)[0].lower()
+    for x in syn:
+        p = re.split(r'(?i)\s+(оригинал\s+)?BMW\b', x, 1)[0].strip()
+        if p and p.lower() != head and p.lower() not in [q.lower() for q in phr]: phr.append(p)
+    com = r['Комментарий'].replace('\\n', '\n')
+    hook = next((clean(l) for l in com.split('\n') if re.search(HOOK, l, re.I)), '')
+    ec = engine_code(r) if category(r['Наименование'])[0] in ENGINE_C5 else ''
+    if phr:
+        s1 = f'{title} — {AGREE[text.gender(phr[0].split()[0])][0]} {_lc(phr[0])}'
+    else:
+        s1 = f'{title} — оригинальная запчасть BMW'
+    if ec: s1 += f' для двигателя {ec}'
+    s1 += (', ' + _lc(hook).rstrip('.!')) if hook else (', новая' if r['Новый/БУ'] == 'Новый' else ', б/у')
+    out = [s1 + '.']
+    if len(phr) > 1: out.append('Другие названия: ' + ', '.join(_lc(x) for x in phr[1:3]) + '.')
+    return ' '.join(out)
+
+def make_desc_v2(r, art, title):
+    comp = '\n'.join(compat_lines(r))
+    bb = text.bodies(comp, title); syn = synonyms(r, title, bb)
+    nums = oem_list(r); deliv = bool(delivery(title))
+    L = ['<p><strong>' + esc(title) + '</strong><br><strong>Артикул товара №' + art + '</strong></p>',
+         '<p>' + esc(intro_v2(r, title, syn, bb)) + '</p>']
+    if text.is_door(title): L.append(text.DOORNOTE)
+    why = []
+    why.append('Оригинал BMW' + (', номер детали ' + esc(nums[0]) if nums else ''))
+    why.append('До оплаты проверим совместимость по VIN вашего автомобиля')
+    why.append('По запросу пришлём дополнительные фото и видео детали')
+    why.append('В наличии на складе в Москве, можно осмотреть перед покупкой')
+    if deliv: why.append('Отправка по России через Авито Доставку')
+    L.append('<p><strong>Почему стоит купить у нас</strong><br>' + '<br>'.join('• ' + x for x in why) + '</p>')
+    info = []
+    if nums: info.append('Номер детали BMW ' + esc(nums[0]))
+    cross = [x for x in nums[1:] if len(x) >= 7 and x != nums[0]][:5]
+    if cross: info.append('Кросс-номера ' + esc(' '.join(dict.fromkeys(cross))))
+    if info: L.append('<p><strong>Номер детали и кросс-номера</strong><br>' + '<br>'.join(info) + '</p>')
+    com = r['Комментарий'].replace('\\n', '\n')
+    com = re.split(r'(?i)(?:^|\n\s*\n)\s*' + re.escape(r['Наименование'].strip()) + r'\s+подходит', com)[0]
+    lines = [esc(clean(x)) for x in com.split('\n') if x.strip()]
+    lines = [soft_caps(re.sub(r'(?i)\s*\bв\s+сборе\b', '', x)) for x in lines if x]
+    eng = r['Двигатель'].strip()
+    mw = [w for w in norm_model(r['Модель']).split() if w.upper() != 'LCI']
+    if eng: mw = [w for w in mw if not re.fullmatch(r'(?i)[BNS]\d\d[A-Z]?', w)]
+    lci = ' LCI' if ('LCI' in r['Модель'].upper() or is_lci(r)) and r['Кузов'] and 'LCI' not in r['Кузов'].upper() else ''
+    donor = 'Снято с BMW ' + esc(clean(' '.join(x for x in [' '.join(mw), (r['Кузов'] + lci).strip(), eng] if x)))
+    if r['Год']: donor += f' {esc(r["Год"])} года выпуска'
+    L.append('<p><strong>Состояние и комплектность</strong><br>' + '<br>'.join(lines + [donor, 'Комплектацию и что входит в стоимость уточняйте у менеджера']) + '</p>')
+    if comp:
+        fl = [clean(f'BMW {x.split("|")[1]} {x.split("|")[2]}') for x in comp.split('\n')]
+        L.append('<p><strong>Подходит для</strong><br>' + '<br>'.join(esc(x) for x in fl) + '</p>')
+    L.append('<p><strong>Как купить</strong><br>Напишите в чат и пришлите VIN: менеджер проверит совместимость и подтвердит наличие.</p>')
+    L.append(POLICY_V2 if CFG.get('returns_v2') else POLICY_HTML)
     return ' '.join(L)
 
 # ---------------- категория ----------------
