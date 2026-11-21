@@ -14,19 +14,21 @@
    "status": "active",
    "added": "2026-11-18",
    "price": 110000,
-   "title": "Капот BMW X7 G07 LCI 2023",
+   "title": "Капот BMW X7 G07 LCI 2023 цвет 475 черный сапфир",
    "oem": "41007933467",
    "photos": 8,
-   "first_feed": "2026-11-18"
+   "first_feed": "2026-11-18",
+   "title_prev": "Капот BMW X7 G07 LCI 2023"
   },
   "26970": {
    "status": "active",
    "added": "2026-11-18",
    "price": 90000,
-   "title": "Дверь боковая правая BMW M2 G87 2024",
+   "title": "Дверь боковая правая BMW M2 G87 2024 цвет 475",
    "oem": "41009466300",
    "photos": 7,
-   "first_feed": "2026-11-18"
+   "first_feed": "2026-11-18",
+   "title_prev": "Дверь боковая правая BMW M2 G87 2024"
   },
   "18011": {
    "status": "active",
@@ -86,10 +88,11 @@
    "status": "active",
    "added": "2026-11-18",
    "price": 60000,
-   "title": "Крыло переднее правое BMW X7 G07 LCI 2023",
+   "title": "Крыло переднее правое BMW X7 G07 LCI 2023 цвет 475",
    "oem": "41007933472",
    "photos": 7,
-   "first_feed": "2026-11-18"
+   "first_feed": "2026-11-18",
+   "title_prev": "Крыло переднее правое BMW X7 G07 LCI 2023"
   },
   "19558": {
    "status": "active",
@@ -149,10 +152,11 @@
    "status": "active",
    "added": "2026-11-18",
    "price": 20000,
-   "title": "Блок управления двигателем BMW X6 G06 LCI G07 2023",
+   "title": "Блок управления двигателем BMW X6 G06 LCI B58 G07",
    "oem": "12145A71304",
    "photos": 8,
-   "first_feed": "2026-11-18"
+   "first_feed": "2026-11-18",
+   "title_prev": "Блок управления двигателем BMW X6 G06 LCI G07 2023"
   },
   "18711": {
    "status": "active",
@@ -167,19 +171,21 @@
    "status": "active",
    "added": "2026-11-18",
    "price": 50000,
-   "title": "Бампер задний BMW X7 G07 LCI 2023",
+   "title": "Бампер задний BMW X7 G07 LCI 2023 цвет 475 черный",
    "oem": "51127209791",
    "photos": 10,
-   "first_feed": "2026-11-18"
+   "first_feed": "2026-11-18",
+   "title_prev": "Бампер задний BMW X7 G07 LCI 2023"
   },
   "24905": {
    "status": "active",
    "added": "2026-11-18",
    "price": 50000,
-   "title": "Модуль рециркуляции ОГ BMW X6 G06 G20 G21 G22 G23",
+   "title": "Модуль рециркуляции ОГ BMW X6 G06 B57 G20 G21 G22",
    "oem": "11719886766",
    "photos": 8,
-   "first_feed": "2026-11-18"
+   "first_feed": "2026-11-18",
+   "title_prev": "Модуль рециркуляции ОГ BMW X6 G06 G20 G21 G22 G23"
   },
   "13155": {
    "status": "active",
@@ -194,10 +200,11 @@
    "status": "active",
    "added": "2026-11-18",
    "price": 45000,
-   "title": "Кожух двигателя BMW X5 F95 F96 G09",
+   "title": "Кожух двигателя BMW X5 F95 S68 F96 G09",
    "oem": "11149846331",
    "photos": 7,
-   "first_feed": "2026-11-18"
+   "first_feed": "2026-11-18",
+   "title_prev": "Кожух двигателя BMW X5 F95 F96 G09"
   },
   "8662": {
    "status": "active",
@@ -275,10 +282,11 @@
    "status": "active",
    "added": "2026-11-19",
    "price": 90000,
-   "title": "Дверь боковая задняя правая BMW X6 G06 LCI F96",
+   "title": "Дверь задняя правая BMW X6 G06 LCI цвет C4P серый",
    "oem": "41008497452",
    "photos": 7,
-   "first_feed": "2026-11-19"
+   "first_feed": "2026-11-19",
+   "title_prev": "Дверь боковая задняя правая BMW X6 G06 LCI F96"
   },
   "20553": {
    "status": "active",
@@ -293,10 +301,11 @@
    "status": "active",
    "added": "2026-11-19",
    "price": 60000,
-   "title": "Крыло переднее левое BMW X6 G06 LCI F96 2023",
+   "title": "Крыло переднее левое BMW X6 G06 LCI цвет A96 белый",
    "oem": "41008737621",
    "photos": 8,
-   "first_feed": "2026-11-19"
+   "first_feed": "2026-11-19",
+   "title_prev": "Крыло переднее левое BMW X6 G06 LCI F96 2023"
   },
   "13474": {
    "status": "active",
@@ -378,10 +387,11 @@
    "status": "active",
    "added": "2026-11-19",
    "price": 70000,
-   "title": "Дверь боковая передняя правая BMW X5 G05 F95 2019",
+   "title": "Дверь передняя правая BMW X5 G05 цвет C1M синий",
    "oem": "41518738552",
    "photos": 7,
-   "first_feed": "2026-11-19"
+   "first_feed": "2026-11-19",
+   "title_prev": "Дверь боковая передняя правая BMW X5 G05 F95 2019"
   },
   "11951": {
    "status": "active",
@@ -423,10 +433,11 @@
    "status": "active",
    "added": "2026-11-20",
    "price": 20000,
-   "title": "Блок управления двигателем BMW X5 G05 LCI G70 G06",
+   "title": "Блок управления двигателем BMW X5 G05 LCI B57 G06",
    "oem": "13617100385",
    "photos": 8,
-   "first_feed": "2026-11-20"
+   "first_feed": "2026-11-20",
+   "title_prev": "Блок управления двигателем BMW X5 G05 LCI G70 G06"
   },
   "19415": {
    "status": "active",
@@ -540,10 +551,11 @@
    "status": "active",
    "added": "2026-11-21",
    "price": 28000,
-   "title": "Блок управления DME BMW X5 G05 G30 G31 G11 G12",
+   "title": "Блок управления DME BMW X5 G05 B58 G30 G31 G11",
    "oem": "12145A46268",
    "photos": 9,
-   "first_feed": "2026-11-21"
+   "first_feed": "2026-11-21",
+   "title_prev": "Блок управления DME BMW X5 G05 G30 G31 G11 G12"
   },
   "13741": {
    "status": "active",
