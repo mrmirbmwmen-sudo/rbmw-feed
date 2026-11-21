@@ -17,5 +17,13 @@
  "bazon_hidden_below": 6400,
  "delivery": true,
  "feed_file": "rbmw.xlsx",
- "photo_base": "https://raw.githubusercontent.com/mrmirbmwmen-sudo/rbmw-feed/main/photos/"
+ "photo_base": "https://raw.githubusercontent.com/mrmirbmwmen-sudo/rbmw-feed/main/photos/",
+ "syn_override": {
+  "13734": [
+   "Левая фара BMW 7 серии G70 светодиодная",
+   "Фара головного света левая BMW 7 серия G70 ICONIC GLOW",
+   "Передняя левая фара BMW G70 Crystal хрусталь",
+   "Оригинальная фара BMW G70 левая б/у"
+  ]
+ }
 }
