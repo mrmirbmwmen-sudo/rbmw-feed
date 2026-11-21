@@ -179,7 +179,8 @@ def make_desc(r, art, title):
     if cross: info.append('Кросс-номера ' + esc(' '.join(dict.fromkeys(cross))))
     if info: L.append('<p>' + '<br>'.join(info) + '</p>')
     com = r['Комментарий'].replace('\\n', '\n')
-    com = com.split('\n\n' + r['Наименование'] + ' подходит')[0]   # блок применяемости Bazon выводим отдельно
+    # блок применяемости Bazon выводим отдельно («Подходит для»); 21.11: и когда комментарий с него начинается
+    com = re.split(r'(?i)(?:^|\n\s*\n)\s*' + re.escape(r['Наименование'].strip()) + r'\s+подходит', com)[0]
     lines = [esc(clean(x)) for x in com.split('\n') if x.strip()]
     lines = [soft_caps(re.sub(r'(?i)\s*\bв\s+сборе\b', '', x)) for x in lines if x]
     # 21.11: «Снято с BMW X5 xDrive50e G05 LCI B58B30S» — LCI после кузова, без повтора кода мотора из модели
