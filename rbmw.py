@@ -146,8 +146,8 @@ def synonyms(r, title, bb):
 def make_desc(r, art, title):
     comp = '\n'.join(compat_lines(r))
     bb = text.bodies(comp, title); syn = synonyms(r, title, bb)
-    L = [f'<p><strong>Артикул товара №{art}</strong></p>']   # 21.11: по просьбе — артикул первой строкой, жирным
-    L.append('<p><strong>' + esc(title) + '</strong>' + ''.join('<br>' + esc(x) for x in syn) + '</p>')
+    # первая строка = заголовок дословно (правило руководства); 21.11: артикул жирным сразу под ним
+    L = ['<p><strong>' + esc(title) + '</strong><br><strong>Артикул товара №' + art + '</strong>' + ''.join('<br>' + esc(x) for x in syn) + '</p>']
     if text.is_door(title): L.append(text.DOORNOTE)
     cond = 'Новая оригинальная запчасть BMW' if r['Новый/БУ'] == 'Новый' else 'Оригинальная запчасть BMW б/у'
     sell = [cond + ' в наличии в Москве']
