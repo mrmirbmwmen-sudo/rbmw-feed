@@ -198,8 +198,7 @@ def make_desc(r, art, title):
         for x in comp.split('\n'):
             p = x.split('|'); fl.append(clean(f'BMW {p[1]} {p[2]}'))
         L.append('<p><strong>Подходит для</strong><br>' + '<br>'.join(esc(x) for x in fl) + '</p>')
-    L.append('<p>' + text.VINP + '</p>')
-    L.append(POLICY_HTML)
+    L.append(POLICY_HTML)   # 24.11: строка про VIN вошла в блок «Покупайте спокойно»
     return ' '.join(L)
 
 
