@@ -99,6 +99,7 @@ def cmd_check(args):
         now = datetime.datetime.now(datetime.timezone.utc).timestamp(); wait = []
         for c in req(f'/messenger/v2/accounts/{u}/chats?limit=50').get('chats', []):
             lm = c.get('last_message') or {}
+            if ((c.get('context') or {}).get('value') or {}).get('user_id') not in (u, None): continue   # 24.11: чаты, где мы покупатели, не считаем
             if not lm or lm.get('author_id') in (u, 0) or lm.get('direction') == 'out': continue
             age = (now - lm.get('created', now)) / 60
             if 30 <= age <= 24 * 60:

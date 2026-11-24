@@ -37,3 +37,5 @@ mkdir -p out; python3 -I analytics.py check || echo "ВНИМАНИЕ прове
 [ "$(date +%H)" = "09" ] && { python3 -I analytics.py specs || echo "сверка шаблонов не выполнена"; }
 # тест продвижения 25.11–01.12: дневная статистика тестовой и контрольной групп, сверка ставок (вечерний запуск)
 [ "$(date +%H)" = "21" ] && { python3 -I promo.py && git add data/promo_log.json && git -c user.name="RBMW bot" -c user.email="noreply@anthropic.com" commit -qm "RBMW: статистика теста продвижения $(date '+%d.%m')" && git -c push.negotiate=true push -q origin HEAD:main; } || true
+# 24.11: показатели «Уровня сервиса» (скорость ответа, ждущие покупатели, отзывы) — в 13:xx и 21:xx
+[ "$(date +%H)" = "13" -o "$(date +%H)" = "21" ] && { python3 -I service.py 7 || echo "сервис не проверен"; } || true
