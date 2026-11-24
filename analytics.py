@@ -75,12 +75,18 @@ def cmd_check(args):
     try:
         st = json.load(open(os.path.join(ROOT, 'state.json'), encoding='utf-8'))['items']
         act = [x for x in items_all() if x.get('status') == 'active']
-        amap = ad_ids([x['id'] for x in act]); diff = []
+        amap = ad_ids([x['id'] for x in act]); diff = []; case = []; tdiff = []
         for x in act:
             a = amap.get(x['id']); it = st.get(str(a)) if a else None
             if it and it.get('status') == 'active' and it.get('price') and x.get('price') != it['price']:
                 diff.append(f"№{a} {x.get('title', '')[:40]}: на Авито {x.get('price')} ₽, по базе {it['price']} ₽")
+            # 24.11: заголовок на Авито = заголовок в файле (Авито сам переводит в строчные непонятные ему сокращения)
+            at = x.get('title') or ''
+            if it and it.get('status') == 'active' and it.get('title') and not at.startswith(it['title']):
+                (case if at.lower().startswith(it['title'].lower()) else tdiff).append(f"№{a}: в файле «{it['title']}», на Авито «{at}»")
         if diff: print(f'Цены на Авито ещё не обновились ({len(diff)}): ' + '; '.join(diff))
+        if case: print(f'ВНИМАНИЕ Авито изменил регистр в заголовках ({len(case)}) — заменить сокращения словами: ' + '; '.join(case))
+        if tdiff: print(f'Заголовки на Авито ещё не обновились ({len(tdiff)}): ' + '; '.join(tdiff[:10]))
     except Exception as e: print('сверка цен не выполнена:', e)
     # чаты: покупатель написал и ждёт ответа дольше 30 минут (скорость ответа влияет на показы)
     try:
