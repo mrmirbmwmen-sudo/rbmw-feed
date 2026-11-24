@@ -94,16 +94,16 @@ def main():
 
     # 5. утренняя самопроверка
     if NOW.hour == 9:
-        real, bonus = A.balance(A.uid())
+        adv = A.advance()
         S = A.stats_v2(A.uid(), (NOW.date() - datetime.timedelta(days=2)).isoformat(), NOW.date().isoformat())
         spend3 = sum(v.get('allSpending', 0) for v in S.values()) / 100
         per_day = spend3 / 3 if spend3 else 0
-        days = (real + bonus) / per_day if per_day else None
+        days = adv / per_day if per_day else None
         pool = len(rbmw.eligible(rbmw.load_csv(rbmw.CSV_NEW), st))
         msgs.append(f"Утренняя самопроверка: в файле {len(ours)}, активных на Авито {len(on_avito & ours)}; "
                     f"последний отчёт Авито — {rep.get('status')}; пул от {rbmw.CFG['min_price']} ₽ — {pool} поз.; "
-                    f"баланс {real + bonus:.0f} ₽, расход ~{per_day:.0f} ₽/день" + (f", хватит на ~{days:.1f} дн." if days else ''))
-        if days is not None and days < 5: msgs.append(f'ВНИМАНИЕ баланса Авито хватит примерно на {days:.1f} дн. — пополните кошелёк')
+                    f"аванс {adv:.0f} ₽, расход ~{per_day:.0f} ₽/день" + (f", хватит на ~{days:.1f} дн." if days else ''))
+        if days is not None and days < 5: msgs.append(f'ВНИМАНИЕ баланса Авито хватит примерно на {days:.1f} дн. — пополните аванс')
 
     json.dump(h, open(HEALTH, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     for m in msgs: print(m)

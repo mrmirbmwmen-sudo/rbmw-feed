@@ -45,8 +45,14 @@ def uid(): return req('/core/v1/accounts/self')['id']
 
 
 def balance(u):
-    b = req(f'/core/v1/accounts/{u}/balance/')
+    try: b = req(f'/core/v1/accounts/{u}/balance/')
+    except Exception: return 0, 0
     return b.get('real', 0), b.get('bonus', 0)
+
+
+def advance():
+    # 24.11: реклама и размещение списываются с АВАНСА (CPA), а не с кошелька — смотреть сюда
+    return req('/cpa/v3/balanceInfo', {}, method='POST').get('balance', 0) / 100
 
 
 def cmd_check(args):
@@ -100,12 +106,12 @@ def cmd_check(args):
                 wait.append(f"{it[:45]} — ждёт {int(age // 60)} ч {int(age % 60)} мин")
         if wait: print(f'ВНИМАНИЕ неотвеченные чаты ({len(wait)}): ' + '; '.join(wait[:10]))
     except Exception as e: print('чаты не проверены:', e)
-    real, bonus = balance(u)
-    print(f'Баланс: {real:.0f} ₽ + бонусы {bonus:.0f}')
-    # 24.11: размещение и продвижение RBMW списываются из АВАНСА (в кабинете ~28 тыс. ₽), а не из кошелька;
-    # аванс через API не виден, поэтому по кошельку тревогу не поднимаем — остаток аванса сверяется по кабинету раз в неделю.
+    # 24.11: размещение и продвижение списываются из АВАНСА; он виден через API /cpa/v3/balanceInfo
+    real, bonus = balance(u); adv = advance()
+    print(f'Аванс Авито: {adv:.0f} ₽ (кошелёк {real:.0f} ₽ + бонусы {bonus:.0f})')
+    if adv < LOW_BALANCE: print(f'ВНИМАНИЕ мало денег на авансе Авито: {adv:.0f} ₽ — объявления могут перестать показываться')
     json.dump({'checked': datetime.datetime.now(MSK).isoformat(timespec='minutes'), 'upload': rep, 'errors': errs,
-               'balance': {'real': real, 'bonus': bonus}},
+               'balance': {'advance': adv, 'real': real, 'bonus': bonus}},
               open(os.path.join(ROOT, 'out', 'check.json'), 'w'), ensure_ascii=False, indent=1)
 
 
@@ -239,7 +245,7 @@ def cmd_report(args):
         a['grp'], a['rec'] = group(a)
         rows.append(a)
     act = [a for a in rows if a['status'] == 'active']
-    real, bonus = balance(u)
+    real, bonus = balance(u); real = advance()
     tot = lambda k, L=act: sum(a[k] for a in L)
     summary = dict(period=f'{d1} — {d2}', days=days, active=len(act), all=len(rows), impressions=tot('impressions'), views=tot('views'),
                    contacts=tot('contacts'), fav=tot('fav'), spend=round(tot('spend'), 2),
@@ -261,7 +267,7 @@ def write_xlsx(sm, rows):
     for k, v in [('Активных объявлений', sm['active']), ('Показы', sm['impressions']), ('Просмотры', sm['views']), ('Контакты', sm['contacts']),
                  ('Избранное', sm['fav']), ('Расход, ₽', sm['spend']), ('Цена контакта, ₽', sm['cpc']), ('Просмотры/показы, %', sm['ctr']),
                  ('Контакты/просмотры, %', sm['cr']), ('Расход на объявления без контактов, ₽', sm['wasted']),
-                 ('Баланс кошелька, ₽', sm['balance']), ('Бонусы', sm['bonus'])]:
+                 ('Аванс Авито, ₽', sm['balance']), ('Бонусы', sm['bonus'])]:
         s.append([k, v])
     s.column_dimensions['A'].width = 42; s.column_dimensions['B'].width = 14
     H = ['Артикул', 'Объявление', 'Статус', 'Цена', 'Дней', 'Показы', 'Просмотры', 'Контакты', 'Избранное', 'Расход, ₽', 'Цена контакта', 'Рекомендация', 'Ссылка']
