@@ -35,3 +35,5 @@ python3 -I rbmw.py status
 mkdir -p out; python3 -I analytics.py check || echo "ВНИМАНИЕ проверка через API Авито не выполнилась (ошибка выше)"
 # раз в день (утренний запуск): сверка официальных шаблонов Авито с нашими
 [ "$(date +%H)" = "09" ] && { python3 -I analytics.py specs || echo "сверка шаблонов не выполнена"; }
+# тест продвижения 25.11–01.12: дневная статистика тестовой и контрольной групп, сверка ставок (вечерний запуск)
+[ "$(date +%H)" = "21" ] && { python3 -I promo.py && git add data/promo_log.json && git -c user.name="RBMW bot" -c user.email="noreply@anthropic.com" commit -qm "RBMW: статистика теста продвижения $(date '+%d.%m')" && git -c push.negotiate=true push -q origin HEAD:main; } || true
