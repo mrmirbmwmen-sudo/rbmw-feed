@@ -102,7 +102,8 @@ def cmd_check(args):
     except Exception as e: print('чаты не проверены:', e)
     real, bonus = balance(u)
     print(f'Баланс: {real:.0f} ₽ + бонусы {bonus:.0f}')
-    if real + bonus < LOW_BALANCE: print(f'ВНИМАНИЕ мало денег на кошельке Авито: {real + bonus:.0f} ₽ — объявления могут перестать публиковаться')
+    # 24.11: размещение и продвижение RBMW списываются из АВАНСА (в кабинете ~28 тыс. ₽), а не из кошелька;
+    # аванс через API не виден, поэтому по кошельку тревогу не поднимаем — остаток аванса сверяется по кабинету раз в неделю.
     json.dump({'checked': datetime.datetime.now(MSK).isoformat(timespec='minutes'), 'upload': rep, 'errors': errs,
                'balance': {'real': real, 'bonus': bonus}},
               open(os.path.join(ROOT, 'out', 'check.json'), 'w'), ensure_ascii=False, indent=1)

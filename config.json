@@ -44,5 +44,6 @@
    "Фара BMW G70 правая оригинал б/у"
   ]
  },
- "pick_by_demand": true
+ "pick_by_demand": true,
+ "exclude_name_re": "подушк\\w* безопасност|пиропатрон"
 }
