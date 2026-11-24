@@ -148,11 +148,15 @@ def cmd_specs(args):
     if '--baseline' in args or not os.path.exists(path):
         json.dump(snap, open(path, 'w'), ensure_ascii=False, indent=0); print('снимок шаблонов Авито сохранён'); return
     old = json.load(open(path, encoding='utf-8')); msgs = []
-    wb = openpyxl.load_workbook(os.path.join(ROOT, 'data', 'template.xlsx'), read_only=True)
     heads = {}
-    for ws in wb.worksheets:
-        rows = ws.iter_rows(min_row=1, max_row=2, values_only=True); a1 = next(rows, [None])[0]; h = next(rows, ())
-        if a1: heads[str(a1)] = set(x for x in h if x)
+    # 24.11: фаркопы живут в отдельном файле (rbmw_farkop.xlsx) по своему шаблону — сверяем оба
+    for tpl in ('template.xlsx', 'template_farkop_avito.xlsx'):
+        p = os.path.join(ROOT, 'data', tpl)
+        if not os.path.exists(p): continue
+        wb = openpyxl.load_workbook(p, read_only=(tpl == 'template.xlsx'))   # у шаблона фаркопов неверные размеры листа — читаем целиком
+        for ws in wb.worksheets:
+            rows = ws.iter_rows(min_row=1, max_row=2, values_only=True); a1 = next(rows, [None])[0]; h = next(rows, ())
+            if a1 and h: heads[str(a1)] = heads.get(str(a1), set()) | set(x for x in h if x)
     for name, d in snap.items():
         o = old.get(name, {}); h = next((v for k, v in heads.items() if k.endswith(name)), set())
         for lab, f in d.items():
