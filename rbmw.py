@@ -433,8 +433,21 @@ def eligible(cur, st):
         o = oem_list(r)
         if o and norm(o[0]) in used_oem: continue
         out.append(r)
-    out.sort(key=lambda r: -num(r['Цена']))
+    if CFG.get('pick_by_demand'):
+        out.sort(key=lambda r: (-demand_score(r), -num(r['Цена'])))   # 24.11: по ожидаемому спросу (data/demand.json)
+    else:
+        out.sort(key=lambda r: -num(r['Цена']))
     return out
+
+_DEMAND = None
+def demand_score(r):
+    """Ожидаемые контакты в месяц: спрос по цене × раздел × кузов (годовая статистика основного аккаунта)."""
+    global _DEMAND
+    if _DEMAND is None: _DEMAND = json.load(open(P('data', 'demand.json'), encoding='utf-8'))
+    pr = num(r['Цена']); band = next((v for lo, v in reversed(_DEMAND['bands']) if pr >= lo), _DEMAND['bands'][0][1])
+    c5 = category(r['Наименование'])[0]
+    c5 = {'AUDIO': 'Другое', 'FARKOP': 'Фаркопы и комплектующие'}.get(c5, c5)
+    return band * _DEMAND['sections'].get(c5, 1.0) * _DEMAND['bodies'].get(donor_body(r), 1.0)
 
 def cmd_pick(args):
     st = load_state()
