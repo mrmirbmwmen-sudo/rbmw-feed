@@ -47,8 +47,10 @@ def main():
     av = [log['items'][k]['avito_id'] for k in TEST if k in log['items']]
     pr = {str(p['itemID']): p for p in a.req('/cpxpromo/1/getPromotionsByItemIds', {'itemIds': av}).get('items', [])}
     for k, (bid, lim) in PLAN.items():
-        p = pr.get(str(log['items'].get(k, {}).get('avito_id')), {}).get('manualPromotion') or {}
-        if not p: print(f'ВНИМАНИЕ продвижение не найдено: №{k} {TEST[k]}')
+        raw = pr.get(str(log['items'].get(k, {}).get('avito_id')), {})
+        p = raw.get('manualPromotion') or {}
+        if not p:      # 24.11: владелец может перевести на автоматический режим Авито с потолком цены — показываем как есть
+            print(f"№{k} {TEST[k]}: режим не ручной — {json.dumps({x: y for x, y in raw.items() if x != 'itemID'}, ensure_ascii=False) or 'продвижение не найдено'}")
         elif (p.get('bidPenny'), p.get('limitPenny')) != (bid * 100, lim * 100):
             print(f"ВНИМАНИЕ №{k} {TEST[k]}: ставка {p.get('bidPenny', 0) / 100:.0f} ₽, лимит {p.get('limitPenny', 0) / 100:.0f} ₽ (план {bid}/{lim})")
 
