@@ -108,17 +108,47 @@ def norm_model(m):
     m = re.sub(r'\(M\)', '', m)
     return re.sub(r'\s+', ' ', m).strip()
 
+PAINT_RU = [(r'sapphire', 'черный сапфир'), (r'carbon', 'черный карбон'), (r'schwarz|black', 'черный'), (r'alpinweiss|weiss|white', 'белый'),
+            (r'orange', 'оранжевый'), (r'blau|blue', 'синий'), (r'grau|grey|gray', 'серый'), (r'rot\b|red', 'красный'),
+            (r'silber|silver', 'серебристый'), (r'gr[uü]n|green', 'зеленый')]
+PAINT_CODE = {'475': 'черный сапфир', '416': 'черный карбон', '300': 'белый', 'A96': 'белый', 'C4P': 'серый', 'C4W': 'серый'}
+
+def color_suffixes(r):
+    """24.11: цвет для заголовка кузовной детали — варианты от полного к короткому («цвет 475 черный сапфир», «цвет 475»)."""
+    c = re.sub(r'\s+', ' ', r['Цвет'].replace('_', ' ')).strip()
+    if not c or re.search(r'(?i)маркировк', c): return []
+    m = re.match(r'^([A-Z]?\d{2,3}|[A-Z]\d[A-Z0-9])\b', c)
+    if m:
+        code = m.group(1)
+        ru = next((v for k, v in PAINT_RU if re.search(k, c, re.I)), PAINT_CODE.get(code, ''))
+        out = [f'цвет {code} {ru}'] if ru else []
+        if ru and ' ' in ru: out.append(f'цвет {code} {ru.split()[0]}')
+        return out + [f'цвет {code}']
+    ru = re.split(r'[/(]', c)[0].strip().lower()
+    return [f'цвет {ru}'] if re.fullmatch(r'[а-яё -]{3,25}', ru) else []
+
+def engine_short(r, name):
+    """24.11: короткий код двигателя (B58, S68…) для моторных деталей — так ищут покупатели (правило руководства)."""
+    if category(name)[0] not in ENGINE_C5 and not re.search(r'(?i)двигател|\bDME\b|\bDDE\b', name): return ''
+    m = re.match(r'(?i)([BNS]\d\d)', r['Двигатель'].strip())
+    return m.group(1).upper() if m else ''
+
 def make_title(r):
     b = donor_body(r)
     ms = norm_model(r['Модель'].split(',')[0].replace('BMW', ''))
     ser = re.match(r'\d серия\b', ms)
     mdl = ms.split()
-    mdl = ser.group(0) if ser else next((w for w in mdl if w.upper() not in ('LCI',) and not re.fullmatch(r'\d', w)), '')
+    mdl = ser.group(0) if ser else next((w for w in mdl if w.upper() not in ('LCI',) and not re.fullmatch(r'\d', w) and not re.match(r'(?i)[xs](Drive|Line)', w)), '')
     if mdl.upper() == b: mdl = ''
-    w = [r['Наименование'], side(r), 'BMW', mdl, b, 'LCI' if is_lci(r) and b in LCI_YEAR else '', r['Год'][-4:]]
+    eng = engine_short(r, r['Наименование'])
+    w = [r['Наименование'], side(r), 'BMW', mdl, b, 'LCI' if is_lci(r) and b in LCI_YEAR else '', eng, r['Год'][-4:]]
     t = text.clean_title(' '.join(x for x in w if x))
+    if text.BODY.match(t):                                   # кузов: цвет важнее лишних кузовов из применяемости
+        for suf in color_suffixes(r):
+            if len(t) + 1 + len(suf) <= 50: t = t + ' ' + suf; break
     comp = '\n'.join(compat_lines(r))
-    return text.add_bodies(t, comp)
+    t = text.add_bodies(t, comp)
+    return re.sub(r' (цвет .+?) (20[12]\d)$', r' \2 \1', t)   # год перед цветом
 
 def esc(t): return html.escape(t, quote=False)
 
