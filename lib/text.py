@@ -36,8 +36,15 @@ def gender(w):
     if re.search(r'(а|я)$',w): return 'f'
     if re.search(r'(о|е)$',w): return 'n'
     return 'm'
+# 24.11: Авито переводит в строчные непонятные ему сокращения (ОГ→ог, ЭБУ→эбу, ADCAM→adcam, KaFAS→kafas).
+# АКПП, DME, ACC, LCI он оставляет. Заменяем такие сокращения словами.
+AVITO_LOWER=[(r'(?i)\bблок управления ЭБУ ADCAM\b','Блок камеры ассистентов'),(r'(?i)\bЭБУ ADCAM\b','блок камеры ассистентов'),
+             (r'(?i)\bKaFAS\b','лобового стекла'),(r'\bОГ\b','выхлопных газов'),(r'\s*\bЭБУ\b',''),(r'(?i)\bADCAM\b','ассистентов')]
+def avito_case(t):
+    for p,r in AVITO_LOWER: t=re.sub(p,r,t)
+    return re.sub(r'\s+',' ',t).strip()
 def clean_title(t):
-    t=re.sub(r'\s+',' ',unent(t)).strip(); g=gender(t.split()[0]) if t else 'm'
+    t=avito_case(re.sub(r'\s+',' ',unent(t)).strip()); g=gender(t.split()[0]) if t else 'm'
     for pat,k in ABR:
         t=re.sub(r'(?i)\b'+pat+r'(?=\s|$)',lambda m:END[g][k],t)
     t=re.sub(r'(?i)(\d)\s*-\s*series',r'\1 серия',t)   # 21.11: «7-series» → «7 серия»

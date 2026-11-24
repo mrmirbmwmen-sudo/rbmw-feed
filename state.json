@@ -181,7 +181,7 @@
    "status": "active",
    "added": "2026-11-18",
    "price": 50000,
-   "title": "Модуль рециркуляции ОГ BMW X6 G06 B57 G20 G21 G22",
+   "title": "Модуль рециркуляции выхлопных газов BMW X6 G06",
    "oem": "11719886766",
    "photos": 8,
    "first_feed": "2026-11-18",
@@ -479,10 +479,11 @@
    "status": "active",
    "added": "2026-11-20",
    "price": 15000,
-   "title": "Блок управления ЭБУ ADCAM BMW X6 G06 LCI G70 F95",
+   "title": "Блок камеры ассистентов BMW X6 G06 LCI G70 F95",
    "oem": "66515B33838",
    "photos": 7,
-   "first_feed": "2026-11-20"
+   "first_feed": "2026-11-20",
+   "title_prev": "Блок управления ЭБУ ADCAM BMW X6 G06 LCI G70 F95"
   },
   "11400": {
    "status": "active",
@@ -642,10 +643,11 @@
    "status": "active",
    "added": "2026-11-22",
    "price": 20000,
-   "title": "Камера KaFAS BMW X3 G01",
+   "title": "Камера лобового стекла BMW X3 G01",
    "oem": "66515A563C4",
    "photos": 7,
-   "first_feed": "2026-11-22"
+   "first_feed": "2026-11-22",
+   "title_prev": "Камера KaFAS BMW X3 G01"
   },
   "4323": {
    "status": "sold",
@@ -706,10 +708,11 @@
    "status": "active",
    "added": "2026-11-23",
    "price": 20000,
-   "title": "Электронный блок управления ЭБУ BMW X5 G05 LCI G20",
+   "title": "Электронный блок управления BMW X5 G05 LCI G20",
    "oem": "62105B5B499",
    "photos": 7,
-   "first_feed": "2026-11-23"
+   "first_feed": "2026-11-23",
+   "title_prev": "Электронный блок управления ЭБУ BMW X5 G05 LCI G20"
   },
   "17070": {
    "status": "active",
@@ -724,10 +727,11 @@
    "status": "active",
    "added": "2026-11-23",
    "price": 20000,
-   "title": "Камера KaFAS BMW X6 G06 F95 G05 G07",
+   "title": "Камера лобового стекла BMW X6 G06 F95 G05 G07",
    "oem": "66515A67971",
    "photos": 8,
-   "first_feed": "2026-11-23"
+   "first_feed": "2026-11-23",
+   "title_prev": "Камера KaFAS BMW X6 G06 F95 G05 G07"
   },
   "18322": {
    "status": "active",
