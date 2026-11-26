@@ -2254,61 +2254,68 @@
    }
   },
   "2026-11-25": {
+   "20872": {
+    "impressions": 12,
+    "views": 5,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 2960
+   },
    "7555": {
-    "impressions": 17,
+    "impressions": 20,
     "views": 5,
     "contacts": 1,
     "favorites": 2,
     "allSpending": 11160
    },
-   "20872": {
-    "impressions": 10,
+   "27345": {
+    "impressions": 15,
     "views": 4,
     "contacts": 0,
     "favorites": 0,
-    "allSpending": 2220
-   },
-   "27345": {
-    "impressions": 14,
-    "views": 3,
-    "contacts": 0,
-    "favorites": 0,
-    "allSpending": 9000
+    "allSpending": 12000
    },
    "21869": {
-    "impressions": 34,
+    "impressions": 37,
+    "views": 4,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 2960
+   },
+   "16624": {
+    "impressions": 27,
     "views": 3,
     "contacts": 0,
     "favorites": 0,
-    "allSpending": 2220
+    "allSpending": 3300
+   },
+   "18991": {
+    "impressions": 30,
+    "views": 3,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 7500
    },
    "11951": {
-    "impressions": 6,
+    "impressions": 7,
     "views": 3,
     "contacts": 0,
     "favorites": 0,
     "allSpending": 800
    },
    "11450": {
-    "impressions": 14,
+    "impressions": 20,
     "views": 2,
     "contacts": 0,
     "favorites": 0,
     "allSpending": 1480
    },
-   "16624": {
-    "impressions": 20,
+   "25097": {
+    "impressions": 2,
     "views": 2,
     "contacts": 0,
     "favorites": 0,
-    "allSpending": 2200
-   },
-   "18991": {
-    "impressions": 26,
-    "views": 2,
-    "contacts": 0,
-    "favorites": 0,
-    "allSpending": 5000
+    "allSpending": 1080
    },
    "28194": {
     "impressions": 6,
@@ -2318,21 +2325,21 @@
     "allSpending": 2200
    },
    "27363": {
-    "impressions": 6,
+    "impressions": 9,
     "views": 2,
     "contacts": 0,
     "favorites": 0,
     "allSpending": 1100
    },
    "28411": {
-    "impressions": 5,
+    "impressions": 7,
     "views": 2,
     "contacts": 0,
     "favorites": 0,
     "allSpending": 1480
    },
    "13474": {
-    "impressions": 3,
+    "impressions": 6,
     "views": 2,
     "contacts": 0,
     "favorites": 0,
@@ -2346,11 +2353,18 @@
     "allSpending": 740
    },
    "3349": {
-    "impressions": 4,
+    "impressions": 6,
     "views": 1,
     "contacts": 0,
     "favorites": 1,
     "allSpending": 700
+   },
+   "16625": {
+    "impressions": 7,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 1100
    },
    "11403": {
     "impressions": 2,
@@ -2360,7 +2374,7 @@
     "allSpending": 740
    },
    "24008": {
-    "impressions": 3,
+    "impressions": 4,
     "views": 1,
     "contacts": 0,
     "favorites": 0,
@@ -2374,14 +2388,14 @@
     "allSpending": 740
    },
    "15755": {
-    "impressions": 3,
+    "impressions": 4,
     "views": 1,
     "contacts": 0,
     "favorites": 1,
     "allSpending": 830
    },
    "24905": {
-    "impressions": 3,
+    "impressions": 4,
     "views": 1,
     "contacts": 0,
     "favorites": 0,
@@ -2394,19 +2408,19 @@
     "favorites": 1,
     "allSpending": 740
    },
+   "16008": {
+    "impressions": 3,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 1100
+   },
    "18591": {
     "impressions": 4,
     "views": 1,
     "contacts": 0,
     "favorites": 0,
     "allSpending": 740
-   },
-   "25097": {
-    "impressions": 2,
-    "views": 1,
-    "contacts": 0,
-    "favorites": 0,
-    "allSpending": 0
    },
    "19225": {
     "impressions": 3,
@@ -2415,12 +2429,33 @@
     "favorites": 0,
     "allSpending": 740
    },
+   "19007": {
+    "impressions": 5,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 1100
+   },
    "13189": {
     "impressions": 1,
     "views": 1,
     "contacts": 0,
     "favorites": 0,
     "allSpending": 740
+   },
+   "25623": {
+    "impressions": 2,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 830
+   },
+   "28324": {
+    "impressions": 7,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 1100
    },
    "20552": {
     "impressions": 3,
@@ -2465,6 +2500,13 @@
     "allSpending": 0
    },
    "6372": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "18037": {
     "impressions": 1,
     "views": 0,
     "contacts": 0,
@@ -2478,18 +2520,11 @@
     "favorites": 0,
     "allSpending": 0
    },
-   "16625": {
+   "18011": {
     "impressions": 6,
     "views": 0,
     "contacts": 0,
-    "favorites": 0,
-    "allSpending": 0
-   },
-   "18011": {
-    "impressions": 3,
-    "views": 0,
-    "contacts": 0,
-    "favorites": 0,
+    "favorites": 1,
     "allSpending": 0
    },
    "18039": {
@@ -2500,27 +2535,34 @@
     "allSpending": 0
    },
    "28140": {
-    "impressions": 7,
+    "impressions": 8,
     "views": 0,
     "contacts": 0,
     "favorites": 0,
     "allSpending": 0
    },
    "12994": {
-    "impressions": 1,
+    "impressions": 2,
     "views": 0,
     "contacts": 0,
     "favorites": 0,
     "allSpending": 0
    },
    "2903": {
-    "impressions": 3,
+    "impressions": 4,
     "views": 0,
     "contacts": 0,
     "favorites": 0,
     "allSpending": 0
    },
    "16628": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "13974": {
     "impressions": 1,
     "views": 0,
     "contacts": 0,
@@ -2528,7 +2570,7 @@
     "allSpending": 0
    },
    "13741": {
-    "impressions": 2,
+    "impressions": 3,
     "views": 0,
     "contacts": 0,
     "favorites": 0,
@@ -2548,15 +2590,8 @@
     "favorites": 0,
     "allSpending": 0
    },
-   "16008": {
-    "impressions": 1,
-    "views": 0,
-    "contacts": 0,
-    "favorites": 0,
-    "allSpending": 0
-   },
    "13038": {
-    "impressions": 1,
+    "impressions": 2,
     "views": 0,
     "contacts": 0,
     "favorites": 0,
@@ -2569,21 +2604,21 @@
     "favorites": 0,
     "allSpending": 0
    },
-   "19007": {
+   "18866": {
     "impressions": 4,
     "views": 0,
     "contacts": 0,
     "favorites": 0,
     "allSpending": 0
    },
-   "18866": {
-    "impressions": 3,
+   "19558": {
+    "impressions": 2,
     "views": 0,
     "contacts": 0,
     "favorites": 0,
     "allSpending": 0
    },
-   "19558": {
+   "3249": {
     "impressions": 1,
     "views": 0,
     "contacts": 0,
@@ -2605,21 +2640,21 @@
     "allSpending": 0
    },
    "19090": {
-    "impressions": 38,
+    "impressions": 45,
     "views": 0,
     "contacts": 0,
     "favorites": 0,
     "allSpending": 0
    },
    "17070": {
-    "impressions": 1,
+    "impressions": 2,
     "views": 0,
     "contacts": 0,
     "favorites": 0,
     "allSpending": 0
    },
    "7167": {
-    "impressions": 4,
+    "impressions": 5,
     "views": 0,
     "contacts": 0,
     "favorites": 0,
@@ -2654,14 +2689,7 @@
     "allSpending": 0
    },
    "18949": {
-    "impressions": 2,
-    "views": 0,
-    "contacts": 0,
-    "favorites": 0,
-    "allSpending": 0
-   },
-   "25623": {
-    "impressions": 1,
+    "impressions": 3,
     "views": 0,
     "contacts": 0,
     "favorites": 0,
@@ -2688,8 +2716,479 @@
     "favorites": 0,
     "allSpending": 0
    },
+   "18934": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   }
+  },
+  "2026-11-26": {
+   "3349": {
+    "impressions": 11,
+    "views": 3,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 2100
+   },
+   "21869": {
+    "impressions": 10,
+    "views": 3,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 2220
+   },
+   "19090": {
+    "impressions": 16,
+    "views": 3,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 8080
+   },
+   "7555": {
+    "impressions": 23,
+    "views": 3,
+    "contacts": 0,
+    "favorites": 1,
+    "allSpending": 5160
+   },
+   "18991": {
+    "impressions": 13,
+    "views": 2,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 5000
+   },
+   "27345": {
+    "impressions": 10,
+    "views": 2,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 6000
+   },
+   "11951": {
+    "impressions": 7,
+    "views": 2,
+    "contacts": 0,
+    "favorites": 2,
+    "allSpending": 800
+   },
+   "11450": {
+    "impressions": 14,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 740
+   },
+   "16624": {
+    "impressions": 11,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 1,
+    "allSpending": 1100
+   },
+   "22706": {
+    "impressions": 2,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 1,
+    "allSpending": 1080
+   },
+   "16625": {
+    "impressions": 6,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 1,
+    "allSpending": 1100
+   },
+   "11400": {
+    "impressions": 3,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 740
+   },
+   "24905": {
+    "impressions": 3,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 830
+   },
+   "18591": {
+    "impressions": 2,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 740
+   },
+   "25097": {
+    "impressions": 2,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 1080
+   },
+   "17997": {
+    "impressions": 1,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 740
+   },
    "28324": {
-    "impressions": 5,
+    "impressions": 2,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 1100
+   },
+   "13474": {
+    "impressions": 4,
+    "views": 1,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 1100
+   },
+   "25141": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "25613": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "28011": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "8503": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "19314": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "6372": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "4546": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "26970": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "22266": {
+    "impressions": 3,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "18011": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "11403": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "18039": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "28140": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "19313": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "12994": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "2903": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "24008": {
+    "impressions": 3,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "15755": {
+    "impressions": 3,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "16628": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "13974": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "17263": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "13741": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "8662": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "876": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "18893": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "28298": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "16008": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "11404": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "18340": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "18711": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "19007": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "19558": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "3249": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "13794": {
+    "impressions": 7,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "20872": {
+    "impressions": 3,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "13189": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "17070": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "7167": {
+    "impressions": 3,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "23308": {
+    "impressions": 4,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "12185": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "18616": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "19415": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "27764": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "18949": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "25623": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "16787": {
+    "impressions": 6,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "4269": {
+    "impressions": 2,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "28194": {
+    "impressions": 1,
+    "views": 0,
+    "contacts": 0,
+    "favorites": 0,
+    "allSpending": 0
+   },
+   "27363": {
+    "impressions": 4,
     "views": 0,
     "contacts": 0,
     "favorites": 0,
@@ -3199,6 +3698,56 @@
    "avito_id": 8410987956,
    "title": "Термоподстаканник BMW X5 G05 F95 F96 G06 G07 G09",
    "price": 17500
+  },
+  "3698": {
+   "avito_id": 8638995069,
+   "title": "Ремень безопасности задний правый BMW 8 серия G16",
+   "price": 15000
+  },
+  "16787": {
+   "avito_id": 8621492945,
+   "title": "Ящик центральной консоли передний BMW X7 G07 LCI",
+   "price": 15000
+  },
+  "13202": {
+   "avito_id": 8579481508,
+   "title": "Вал приводной задний левый BMW X4 G02",
+   "price": 22400
+  },
+  "12185": {
+   "avito_id": 8578463960,
+   "title": "Фара противотуманная передняя правая BMW X3 G01",
+   "price": 15000
+  },
+  "23308": {
+   "avito_id": 8578004396,
+   "title": "Ручка двери багажника BMW X7 G07 LCI 2023",
+   "price": 15000
+  },
+  "13794": {
+   "avito_id": 8554081808,
+   "title": "Карданный вал задний BMW X5 G05 LCI G06 2024",
+   "price": 17600
+  },
+  "28298": {
+   "avito_id": 8508992365,
+   "title": "Замок багажника с доводчиком BMW X7 G07 F95 G05",
+   "price": 15000
+  },
+  "22266": {
+   "avito_id": 8464786075,
+   "title": "Фонарь задний правый BMW X6 G06 F96 2023",
+   "price": 17600
+  },
+  "4546": {
+   "avito_id": 8462616480,
+   "title": "Генератор BMW M5 F90 F91 F92 F93 F95 F96 S63 2019",
+   "price": 16800
+  },
+  "25613": {
+   "avito_id": 8424274921,
+   "title": "Привод задний правый BMW X6 G06 LCI G05 G07 2023",
+   "price": 15000
   }
  }
 }
