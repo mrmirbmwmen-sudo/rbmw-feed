@@ -45,5 +45,8 @@
   ]
  },
  "pick_by_demand": true,
- "exclude_name_re": "подушк\\w* безопасност|пиропатрон"
+ "exclude_name_re": "подушк\\w* безопасност|пиропатрон",
+ "not_original": [
+  "11951"
+ ]
 }

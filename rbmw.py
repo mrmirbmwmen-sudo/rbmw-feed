@@ -168,6 +168,12 @@ def clean(s):
     s = re.sub(r'([,;:])(?=[^\s\d])', r'\1 ', s)                     # и с пробелом после
     return re.sub(r'\s+', ' ', s).strip()
 
+def is_orig(r, art=None):
+    """27.11: не всё из Bazon — оригинал (комплект фонарей G05 №11951 — новые неоригинальные).
+    Неоригинал: артикул в config not_original или «Производитель» в Bazon не BMW."""
+    art = art or r.get('Артикул')
+    return art not in CFG.get('not_original', []) and r.get('Производитель', 'BMW').strip() in ('BMW', '')
+
 def synonyms(r, title, bb):
     """3-4 строки синонимов без знаков: словарь руководства + код двигателя для моторных деталей + общие формы."""
     out = text.syn_lines(title, bb)
@@ -177,7 +183,8 @@ def synonyms(r, title, bb):
     ec = engine_code(r)
     extra = []
     if ec and c5 in ENGINE_C5: extra.append(f'{name} BMW {ec} {tail}')
-    extra += [f'{name} оригинал BMW {tail}', f'{name} BMW {tail} {"новая" if r["Новый/БУ"] == "Новый" else "б/у"}']
+    extra += [f'{name} оригинал BMW {tail}' if is_orig(r) else f'{name} для BMW {tail} аналог',
+              f'{name} BMW {tail} {"новая" if r["Новый/БУ"] == "Новый" else "б/у"}']
     for x in extra:
         x = re.sub(r'\s+', ' ', x).strip()
         if len(out) >= 4: break
@@ -200,13 +207,16 @@ def make_desc(r, art, title):
     L = ['<p><strong>' + esc(title) + '</strong>' + ''.join('<br>' + esc(x) for x in syn) + '<br><strong>Артикул товара №' + art + '</strong></p>']
     if text.is_door(title): L.append(text.DOORNOTE)
     cond = 'Новая оригинальная запчасть BMW' if r['Новый/БУ'] == 'Новый' else 'Оригинальная запчасть BMW б/у'
+    if not is_orig(r, art):
+        mk = r.get('Производитель', '').strip()
+        cond = ('Новая' if r['Новый/БУ'] == 'Новый' else 'Б/у') + ' запчасть, не оригинал' + (f' (производитель {esc(mk)})' if mk and mk != 'BMW' else ' (аналог)')
     sell = [cond + ' в наличии в Москве']
     if delivery(title): sell.append('Отправка по России через Авито Доставку')
     L.append('<p>' + '<br>'.join(sell) + '</p>')
     L.append(text.KOMPL)
     nums = oem_list(r)
     info = []
-    if nums: info.append('Номер детали BMW ' + esc(nums[0]))
+    if nums: info.append(('Номер детали BMW ' if is_orig(r, art) else 'Заменяет оригинальный номер BMW ') + esc(nums[0]))
     cross = [x for x in nums[1:] if len(x) >= 7 and x != nums[0]][:5]
     if cross: info.append('Кросс-номера ' + esc(' '.join(dict.fromkeys(cross))))
     if info: L.append('<p>' + '<br>'.join(info) + '</p>')
@@ -222,7 +232,8 @@ def make_desc(r, art, title):
     lci = ' LCI' if ('LCI' in r['Модель'].upper() or is_lci(r)) and r['Кузов'] and 'LCI' not in r['Кузов'].upper() else ''
     donor = 'Снято с BMW ' + esc(clean(' '.join(x for x in [' '.join(mw), (r['Кузов'] + lci).strip(), eng] if x)))
     if r['Год']: donor += f' {esc(r["Год"])} года выпуска'
-    L.append('<p><strong>Состояние и комплектность</strong><br>' + '<br>'.join(lines + [donor]) + '</p>')
+    if not is_orig(r, art) or r['Новый/БУ'] == 'Новый': donor = None   # 27.11: новая деталь не «снята с» донора
+    L.append('<p><strong>Состояние и комплектность</strong><br>' + '<br>'.join(lines + ([donor] if donor else [])) + '</p>')
     if comp:
         fl = []
         for x in comp.split('\n'):

@@ -1061,10 +1061,11 @@
    "status": "active",
    "added": "2026-11-27",
    "price": 15000,
-   "title": "Насос системы охлаждения ДВС BMW X5 G05 LCI G20",
+   "title": "Насос охлаждения двигателя BMW X5 G05 LCI G20",
    "oem": "11515A020E0",
    "photos": 6,
-   "first_feed": "2026-11-27"
+   "first_feed": "2026-11-27",
+   "title_prev": "Насос системы охлаждения ДВС BMW X5 G05 LCI G20"
   },
   "18752": {
    "status": "active",
